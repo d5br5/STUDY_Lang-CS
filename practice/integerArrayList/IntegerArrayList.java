@@ -1,4 +1,4 @@
-package practice;
+package classtime;
 
 public interface IntegerListInterface{
 	public void add(int i, Integer x);
@@ -79,7 +79,32 @@ public class IntegerArrayList implements IntegerListInterface{
 		item = new Integer[item.length];
 		numItems = 0;
 	}
-	
+	@Override
+	public Integer get(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void set(int i, Integer x) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int indexOf(Integer x) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 	
 	
