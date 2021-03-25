@@ -11,41 +11,293 @@ public class BigInteger
   
     // implement this
     public static final Pattern EXPRESSION_PATTERN = Pattern.compile("");
+    
+    private char sign;
+    private int[] set;
+    private int length;
+    
+    
+    public BigInteger(char c, int[] num, int len) {
+    	this.sign = c;
+    	this.set = num;
+    	this.length = len;
+    }
+    
   
-    public BigInteger(int i)
-    {
+    public BigInteger add(BigInteger big) {//++ or -- only input
+    	int addlength;
+		
+		int[] shortnum;
+		int shortlength;
+		int[] longnum;
+		int longlength;
+		
+		if(this.length>big.length) {
+			addlength = this.length + 1;
+			shortnum = big.set;
+			shortlength = big.length;
+			longnum = this.set;
+			longlength = this.length;
+		}else {
+			addlength = big.length + 1;
+			shortnum = this.set;
+			shortlength = this.length;
+			longnum = big.set;
+			longlength = big.length;
+		}
+		
+		int[] addnum = new int[addlength];
+		
+		int tmp=0;
+		int midsum=0;
+		
+		for(int i=0;i<shortlength;i++) {
+			midsum = shortnum[shortlength-1-i] + longnum[longlength-1-i]+tmp;
+			addnum[addlength-1-i]=midsum%10;
+			
+			if(midsum>=10) {
+				tmp=1;
+			}else {
+				tmp=0;
+			}
+		}
+		
+		for(int i=shortlength;i<longlength;i++) {
+			midsum = longnum[longlength-1-i]+tmp;
+			addnum[addlength-1-i]=midsum%10;
+			
+			if(midsum>=10) {
+				tmp=1;
+			}else {
+				tmp=0;
+			}
+
+		}
+		
+		if(tmp==1) {addnum[0]=1;}
+		
+		return new BigInteger(' ', addnum, addlength);
     }
   
-    public BigInteger(int[] num1)
-    {
-    }
-  
-    public BigInteger(String s)
-    {
-    }
-  
-    public BigInteger add(BigInteger big)
-    {
+    public BigInteger subtract(BigInteger big) { // ++ only input
     	
-    }
-  
-    public BigInteger subtract(BigInteger big)
-    {
-    }
-  
-    public BigInteger multiply(BigInteger big)
-    {
-    }
-  
-    @Override
-    public String toString()
-    {
+    	int minuslength;
     	
+    	
+    	int[] shortnum;
+		int shortlength;
+		int[] longnum;
+		int longlength;
+    	
+		boolean oneisbigger = false;
+		
+		if(this.length>big.length) {
+			oneisbigger=true;
+		}else if(this.length<big.length) {
+			oneisbigger=false;
+		}
+		
+		if(this.length==big.length) {
+			for(int i=0; i<this.length; i++) {
+				if(this.set[i]>big.set[i]) {
+					oneisbigger=true;
+					break;
+				}else if(this.set[i]<big.set[i]) {
+					oneisbigger=false;
+					break;
+				}else {
+					continue;
+				}
+			}
+		}
+		
+		
+		if(oneisbigger) {
+			minuslength = this.length;
+			shortnum = big.set;
+			shortlength = big.length;
+			longnum = this.set;
+			longlength = this.length;
+		}else {
+			minuslength = big.length;
+			shortnum = this.set;
+			shortlength = this.length;
+			longnum = big.set;
+			longlength = big.length;
+		}
+		
+		int[] minusnum = new int[minuslength];
+		int tmp=0;
+		
+		int midsub=0;
+		
+		for(int i=0;i<shortlength;i++) {
+			
+			midsub = longnum[longlength-1-i]-shortnum[shortlength-1-i] +tmp;
+			if(midsub<0) {
+				midsub+=10;
+				tmp=-1;
+			}else {
+				tmp=0;
+			}
+			minusnum[minuslength-1-i]=midsub;
+			
+		}
+		
+		for(int i=shortlength;i<longlength;i++) {
+			midsub = longnum[longlength-1-i]+tmp;
+			if(midsub<0) {
+				midsub+=10;
+				tmp=-1;
+			}else {
+				tmp=0;
+			}
+			minusnum[minuslength-1-i]=midsub;
+			
+		}
+		
+		return new BigInteger(' ', minusnum, minuslength);
+		
     }
   
+//    public BigInteger multiply(BigInteger big)
+//    {
+//    }
+//  
+//    @Override
+//    public String toString()
+//    {
+//    	
+//    }
+//  
     static BigInteger evaluate(String input) throws IllegalArgumentException
     {
-    	
+    	// input = " 999 + + 99990 ";
+		input = input.replaceAll(" ", "");
+		int length = input.length();
+		
+		int signCount=0;
+		char operator;
+		int breakPoint=0;
+		
+		int onelength;
+		int twolength;
+		
+		char[] num1 = new char[length];
+		char[] num2 = new char[length];
+		
+		char firstOp;
+		char secondOp;
+		
+		int start1=0;
+		int start2=0;
+		
+		firstOp = input.charAt(0);
+		
+		if((firstOp!='-')&&(firstOp!='+')) {signCount +=1;}
+		
+		for(int i=0; i<length; i++) {
+			char setnum = input.charAt(i);
+			if(setnum=='*'||setnum=='+'||setnum=='-') {signCount+=1;}
+			if(signCount==2) {
+				breakPoint=i;
+				break;
+			}
+			num1[i]=setnum;
+		}
+				
+		operator=input.charAt(breakPoint);
+		
+		for(int i=breakPoint+1; i<length; i++) {
+			num2[i-breakPoint-1]=input.charAt(i);
+		}
+		
+		//===================================
+		
+		if(num1[0]=='-') {
+			firstOp='-';
+			start1=1;
+			onelength=breakPoint-1;
+		}else if(num1[0]=='+') {
+			firstOp='+';
+			start1=1;
+			onelength=breakPoint-1;
+		}else {
+			firstOp='+';
+			start1=0;
+			onelength=breakPoint;
+		}
+		
+		int[] numone = new int[onelength];
+		
+		for(int i=start1;i<onelength+start1;i++) {
+			numone[i-start1]=Integer.parseInt(String.valueOf(num1[i]));
+			
+		}
+		
+		BigInteger first = new BigInteger(firstOp,numone,onelength);
+		
+		
+		//===================================
+		
+		if(num2[0]=='-') {
+			secondOp = '-';
+			start2=1;
+			twolength=length-breakPoint-2;
+		}else if(num2[0]=='+') {
+			secondOp = '+';
+			start2=1;
+			twolength=length-breakPoint-2;
+		}else {
+			secondOp = '+';
+			start2=0;
+			twolength=length-breakPoint-1;
+		}
+		
+		int[] numtwo = new int[twolength];
+		
+		for(int i=start2;i<twolength+start2;i++) {
+			numtwo[i-start2]=Integer.parseInt(String.valueOf(num2[i]));
+		}
+		
+		BigInteger second = new BigInteger(secondOp, numtwo, twolength);
+		
+		//=================================
+		
+		if(operator=='+') {
+			if(first.sign==second.sign) {
+				return first.add(second);
+			}else if(first.sign=='-') {
+				BigInteger tmpnum = new BigInteger('+', first.set, first.length);
+				return second.subtract(tmpnum);
+			}else {
+				BigInteger tmpnum = new BigInteger('+', second.set, second.length);
+				return first.subtract(tmpnum);
+			}
+		}else if(operator=='-') {
+			if((first.sign=='+')&&(second.sign=='+')) {
+				return first.subtract(second);
+			}else if((first.sign=='+')&&(second.sign=='-')){
+				BigInteger tmpnum = new BigInteger('+', second.set, second.length);
+				return first.add(tmpnum);
+			}else if((first.sign=='-')&&(second.sign=='+')){
+				BigInteger tmpnum = new BigInteger('-', second.set, second.length);
+				return first.add(tmpnum);
+			}else {// - -
+				BigInteger tmpnum1 = new BigInteger('+', first.set, first.length);
+				BigInteger tmpnum2 = new BigInteger('+', second.set, second.length);
+				return tmpnum2.subtract(tmpnum1);
+			}
+		}else {
+			return first;
+		}
+		
+		
+		
+		//========================================
+		
+		
+		
     	
         // implement here
         // parse input

@@ -1,7 +1,7 @@
 
 public class papar {
 	public static void main(String[] args) {
-		String input = "-112344564564564546451231231895678945642132400--112312121231231321231231321213212313213121300";
+		String input = " 999 + + 99990 ";
 		input = input.replaceAll(" ", "");
 		int length = input.length();
 		
@@ -101,6 +101,140 @@ public class papar {
 		System.out.println("num2 : ");
 		System.out.println(num2);
 		
+		//=================================
 		
+		int addlength;
+		int minuslength;
+		
+		int[] shortnum;
+		int shortlength;
+		int[] longnum;
+		int longlength;
+		
+		if(onelength>twolength) {
+			addlength = onelength+1;
+			shortnum = numtwo;
+			shortlength = twolength;
+			longnum = numone;
+			longlength = onelength;
+		}else {
+			addlength = twolength+1;
+			shortnum = numone;
+			shortlength = onelength;
+			longnum = numtwo;
+			longlength = twolength;
+		}
+		
+		int[] addnum = new int[addlength];
+		
+		int tmp=0;
+		int midsum=0;
+		
+		for(int i=0;i<shortlength;i++) {
+			midsum = shortnum[shortlength-1-i] + longnum[longlength-1-i]+tmp;
+			addnum[addlength-1-i]=midsum%10;
+			
+			if(midsum>=10) {
+				tmp=1;
+			}else {
+				tmp=0;
+			}
+		}
+		
+		for(int i=shortlength;i<longlength;i++) {
+			midsum = longnum[longlength-1-i]+tmp;
+			addnum[addlength-1-i]=midsum%10;
+			
+			if(midsum>=10) {
+				tmp=1;
+			}else {
+				tmp=0;
+			}
+
+		}
+		
+		if(tmp==1) {addnum[0]=1;}
+		
+		System.out.println("---------plus");
+		for(int i=0;i<addlength;i++) {
+			System.out.println(addnum[i]);
+		}
+		System.out.println("============");
+		
+		
+		boolean oneisbigger = false;
+		
+		if(onelength>twolength) {
+			oneisbigger=true;
+		}else if(onelength<twolength) {
+			oneisbigger=false;
+		}
+		
+		if(onelength==twolength) {
+			for(int i=0; i<onelength; i++) {
+				if(numone[i]>numtwo[i]) {
+					oneisbigger=true;
+					break;
+				}else if(numone[i]<numtwo[i]) {
+					oneisbigger=false;
+					break;
+				}else {
+					continue;
+				}
+			}
+		}
+		
+		
+		if(oneisbigger) {
+			minuslength = onelength;
+			shortnum = numtwo;
+			shortlength = twolength;
+			longnum = numone;
+			longlength = onelength;
+		}else {
+			minuslength = twolength;
+			shortnum = numone;
+			shortlength = onelength;
+			longnum = numtwo;
+			longlength = twolength;
+		}
+		
+		int[] minusnum = new int[minuslength];
+		
+		tmp=0;
+		int midsub=0;
+		
+		for(int i=0;i<shortlength;i++) {
+			
+			midsub = longnum[longlength-1-i]-shortnum[shortlength-1-i] +tmp;
+			if(midsub<0) {
+				midsub+=10;
+				tmp=-1;
+			}else {
+				tmp=0;
+			}
+			minusnum[minuslength-1-i]=midsub;
+			
+		}
+		
+		for(int i=shortlength;i<longlength;i++) {
+			midsub = longnum[longlength-1-i]+tmp;
+			if(midsub<0) {
+				midsub+=10;
+				tmp=-1;
+			}else {
+				tmp=0;
+			}
+			minusnum[minuslength-1-i]=midsub;
+			
+		}
+		
+		System.out.println("=====minus=======");
+		for(int i=0;i<minuslength;i++) {
+			System.out.println(minusnum[i]);
+		}
+		
+		
+
 	}
 }
