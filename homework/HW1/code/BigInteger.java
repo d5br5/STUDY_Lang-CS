@@ -79,7 +79,7 @@ public class BigInteger
 		int[] longnum;
 		int longlength;
     	
-		boolean oneisbigger = false;
+		boolean oneisbigger = true;
 		
 		if(this.length>big.length) {
 			oneisbigger=true;
@@ -162,7 +162,7 @@ public class BigInteger
 			resultsign='-';
 		}
 		
-		boolean oneisbigger = false;
+		boolean oneisbigger = true;
 		
 		if(this.length>big.length) {
 			oneisbigger=true;

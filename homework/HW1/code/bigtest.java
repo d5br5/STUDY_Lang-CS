@@ -79,7 +79,7 @@ public class bigtest
 		int[] longnum;
 		int longlength;
     	
-		boolean oneisbigger = false;
+		boolean oneisbigger = true;
 		
 		if(this.length>big.length) {
 			oneisbigger=true;
@@ -400,7 +400,7 @@ public class bigtest
   
     public static void main(String[] args)
     {
-    	String input = "+195130814530862300198680671079+-195130814530862300198680671079";
+    	String input = "-195130814530862300198680671079--195130814530862300198680671079";
     	bigtest result = evaluate(input);
         System.out.println(result.toString());
     }
