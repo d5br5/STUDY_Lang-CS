@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
   
   
-public class BigInteger
+public class bigtest
 {
     public static final String QUIT_COMMAND = "quit";
     public static final String MSG_INVALID_INPUT = "wrong answer!! sad..";
@@ -17,14 +17,14 @@ public class BigInteger
     private int length;
     
     
-    public BigInteger(char c, int[] num, int len) {
+    public bigtest(char c, int[] num, int len) {
     	this.sign = c;
     	this.set = num;
     	this.length = len;
     }
     
   
-    public BigInteger add(BigInteger big) {//++ or -- only input
+    public bigtest add(bigtest big) {//++ or -- only input
     	
     	int addlength;
     	
@@ -66,10 +66,10 @@ public class BigInteger
 		
 		if(tmp==1) {addnum[0]=1;}
 		
-		return new BigInteger(this.sign, addnum, addlength);
+		return new bigtest(this.sign, addnum, addlength);
     }
   
-    public BigInteger subtract(BigInteger big) { // ++ only input
+    public bigtest subtract(bigtest big) { // ++ only input
     	
     	int minuslength;
     	char resultsign='+';
@@ -146,11 +146,11 @@ public class BigInteger
 			
 		}
 		
-		return new BigInteger(resultsign, minusnum, minuslength);
+		return new bigtest(resultsign, minusnum, minuslength);
 		
     }
   
-    public BigInteger multiply(BigInteger big)
+    public bigtest multiply(bigtest big)
     {
     	int[] shortnum;
 		int shortlength;
@@ -229,7 +229,7 @@ public class BigInteger
 			
 		}
 		
-		return new BigInteger(resultsign, mulnum, mullength);
+		return new bigtest(resultsign, mulnum, mullength);
     	
     }
   
@@ -258,7 +258,7 @@ public class BigInteger
 		
     }
   
-    static BigInteger evaluate(String input) throws IllegalArgumentException
+    static bigtest evaluate(String input) throws IllegalArgumentException
     {
     	// input = " 999 + + 99990 ";
 		input = input.replaceAll(" ", "");
@@ -323,7 +323,7 @@ public class BigInteger
 			
 		}
 		
-		BigInteger first = new BigInteger(firstOp,numone,onelength);
+		bigtest first = new bigtest(firstOp,numone,onelength);
 		
 		
 		//===================================
@@ -348,7 +348,7 @@ public class BigInteger
 			numtwo[i-start2]=Integer.parseInt(String.valueOf(num2[i]));
 		}
 		
-		BigInteger second = new BigInteger(secondOp, numtwo, twolength);
+		bigtest second = new bigtest(secondOp, numtwo, twolength);
 		
 		//=================================
 		
@@ -356,24 +356,24 @@ public class BigInteger
 			if(first.sign==second.sign) {
 				return first.add(second);
 			}else if(first.sign=='-') {
-				BigInteger tmpnum = new BigInteger('+', first.set, first.length);
+				bigtest tmpnum = new bigtest('+', first.set, first.length);
 				return second.subtract(tmpnum);
 			}else {
-				BigInteger tmpnum = new BigInteger('+', second.set, second.length);
+				bigtest tmpnum = new bigtest('+', second.set, second.length);
 				return first.subtract(tmpnum);
 			}
 		}else if(operator=='-') {
 			if((first.sign=='+')&&(second.sign=='+')) {
 				return first.subtract(second);
 			}else if((first.sign=='+')&&(second.sign=='-')){
-				BigInteger tmpnum = new BigInteger('+', second.set, second.length);
+				bigtest tmpnum = new bigtest('+', second.set, second.length);
 				return first.add(tmpnum);
 			}else if((first.sign=='-')&&(second.sign=='+')){
-				BigInteger tmpnum = new BigInteger('-', second.set, second.length);
+				bigtest tmpnum = new bigtest('-', second.set, second.length);
 				return first.add(tmpnum);
 			}else {// - -
-				BigInteger tmpnum1 = new BigInteger('+', first.set, first.length);
-				BigInteger tmpnum2 = new BigInteger('+', second.set, second.length);
+				bigtest tmpnum1 = new bigtest('+', first.set, first.length);
+				bigtest tmpnum2 = new bigtest('+', second.set, second.length);
 				return tmpnum2.subtract(tmpnum1);
 			}
 		}else {
@@ -392,55 +392,18 @@ public class BigInteger
         // using regex is allowed
   
         // One possible implementation
-        // BigInteger num1 = new BigInteger(arg1);
-        // BigInteger num2 = new BigInteger(arg2);
-        // BigInteger result = num1.add(num2);
+        // bigtest num1 = new bigtest(arg1);
+        // bigtest num2 = new bigtest(arg2);
+        // bigtest result = num1.add(num2);
         // return result;
     }
   
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
-        try (InputStreamReader isr = new InputStreamReader(System.in))
-        {
-            try (BufferedReader reader = new BufferedReader(isr))
-            {
-                boolean done = false;
-                while (!done)
-                {
-                    String input = reader.readLine();
-  
-                    try
-                    {
-                        done = processInput(input);
-                    }
-                    catch (IllegalArgumentException e)
-                    {
-                        System.err.println(MSG_INVALID_INPUT);
-                    }
-                }
-            }
-        }
+    	String input = "+195130814530862300198680671079+-195130814530862300198680671079";
+    	bigtest result = evaluate(input);
+        System.out.println(result.toString());
     }
   
-    static boolean processInput(String input) throws IllegalArgumentException
-    {
-        boolean quit = isQuitCmd(input);
-  
-        if (quit)
-        {
-            return true;
-        }
-        else
-        {
-            BigInteger result = evaluate(input);
-            System.out.println(result.toString());
-  
-            return false;
-        }
-    }
-  
-    static boolean isQuitCmd(String input)
-    {
-        return input.equalsIgnoreCase(QUIT_COMMAND);
-    }
+   
 }
