@@ -11,9 +11,9 @@ public class MyLinkedList<T> implements ListInterface<T> {
 		head = new Node<T>(null);
 	}
 
-    /**
-     * {@code Iterable<T>}ë¥¼ êµ¬í˜„í•˜ì—¬ iterator() ë©”ì†Œë“œë¥¼ ì œê³µí•˜ëŠ” í´ë˜ìŠ¤ì˜ ì¸ìŠ¤í„´ìŠ¤ëŠ”
-     * ë‹¤ìŒê³¼ ê°™ì€ ìë°” for-each ë¬¸ë²•ì˜ í˜œíƒì„ ë³¼ ìˆ˜ ìˆë‹¤.
+	/**
+     * {@code Iterable<T>}¸¦ ±¸ÇöÇÏ¿© iterator() ¸Ş¼Òµå¸¦ Á¦°øÇÏ´Â Å¬·¡½ºÀÇ ÀÎ½ºÅÏ½º´Â
+     * ´ÙÀ½°ú °°Àº ÀÚ¹Ù for-each ¹®¹ıÀÇ ÇıÅÃÀ» º¼ ¼ö ÀÖ´Ù.
      * 
      * <pre>
      *  for (T item: iterable) {

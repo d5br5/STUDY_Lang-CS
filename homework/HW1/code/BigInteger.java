@@ -12,8 +12,8 @@ public class BigInteger
     // implement this
     public static final Pattern EXPRESSION_PATTERN = Pattern.compile("");
     
-    private char sign;
-    private int[] set;
+    private char sign;  
+    private int[] set;	// without sign
     private int length;
     
     
@@ -24,16 +24,17 @@ public class BigInteger
     }
     
   
-    public BigInteger add(BigInteger big) {//++ or -- only input
+    public BigInteger add(BigInteger big) { //++ or -- only input
     	
-    	int addlength;
+    	int addlength;	//length of result(add)
     	
 		int[] shortnum;
 		int shortlength;
 		int[] longnum;
 		int longlength;
 		
-		if(this.length>big.length) {
+		// After scale comparison, allocate smaller to short, bigger to long
+		if(this.length>big.length) {	
 			addlength = this.length + 1;
 			shortnum = big.set;
 			shortlength = big.length;
@@ -71,7 +72,7 @@ public class BigInteger
   
     public BigInteger subtract(BigInteger big) { // ++ only input
     	
-    	int minuslength;
+    	int minuslength; //length of result(subtract)
     	char resultsign='+';
     
     	int[] shortnum;
@@ -184,7 +185,7 @@ public class BigInteger
 			}
 		}
 		
-		int mullength = this.length+big.length;
+		int mullength = this.length+big.length;	//length of result(multiply)
 		
 		if(oneisbigger) {
 			shortnum = big.set;
@@ -260,17 +261,18 @@ public class BigInteger
   
     static BigInteger evaluate(String input) throws IllegalArgumentException
     {
-    	// input = " 999 + + 99990 ";
-		input = input.replaceAll(" ", "");
+		input = input.replaceAll(" ", "");		// trim all space
 		int length = input.length();
 		
 		int signCount=0;
 		char operator;
+		
 		int breakPoint=0;
 		
 		int onelength;
 		int twolength;
 		
+		//temporary array for number 1,2
 		char[] num1 = new char[length];
 		char[] num2 = new char[length];
 		
@@ -316,11 +318,14 @@ public class BigInteger
 			onelength=breakPoint;
 		}
 		
+		
+		//real array for number 1
 		int[] numone = new int[onelength];
 		
 		for(int i=start1;i<onelength+start1;i++) {
 			numone[i-start1]=Integer.parseInt(String.valueOf(num1[i]));
-			
+			//reference1 : http://etl.snu.ac.kr/mod/ubboard/article.php?id=1358555&keyfield=content&keyword=valueof&bwid=2427478
+			//reference2 : https://www.javatpoint.com/java-char-to-int
 		}
 		
 		BigInteger first = new BigInteger(firstOp,numone,onelength);
@@ -342,10 +347,13 @@ public class BigInteger
 			twolength=length-breakPoint-1;
 		}
 		
+		//real array for number 2
 		int[] numtwo = new int[twolength];
 		
 		for(int i=start2;i<twolength+start2;i++) {
 			numtwo[i-start2]=Integer.parseInt(String.valueOf(num2[i]));
+			//reference1 : http://etl.snu.ac.kr/mod/ubboard/article.php?id=1358555&keyfield=content&keyword=valueof&bwid=2427478
+			//reference2 : https://www.javatpoint.com/java-char-to-int
 		}
 		
 		BigInteger second = new BigInteger(secondOp, numtwo, twolength);
@@ -380,22 +388,6 @@ public class BigInteger
 			return first.multiply(second);
 		}
 		
-		
-		
-		//========================================
-		
-		
-		
-    	
-        // implement here
-        // parse input
-        // using regex is allowed
-  
-        // One possible implementation
-        // BigInteger num1 = new BigInteger(arg1);
-        // BigInteger num2 = new BigInteger(arg2);
-        // BigInteger result = num1.add(num2);
-        // return result;
     }
   
     public static void main(String[] args) throws Exception

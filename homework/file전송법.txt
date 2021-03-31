@@ -1,5 +1,13 @@
 scp -r [파일디렉토리] 2015-18362@snucse.org:~
-
 scp -r D:\dev\github\snu_data_structure\homework\HW1\HW1-6 2015-18362@ds0.snucse.org:~
+scp -r D:\dev\github\snu_data_structure\homework\HW1\code\BigInteger.java 2015-18362@ds0.snucse.org:~/dirtest
 
-D:\dev\github\snu_data_structure\homework\HW1\HW1-1
+scp -r D:\dev\github\snu_data_structure\homework\HW1\HW1-6\1-BigInteger 2015-18362@ds0.snucse.org:~/HW1/1-1
+
+
+
+ssh 2015-18362@ds0.snucse.org
+
+mkdir test
+
+rm -r dir1 dir2 dir3
