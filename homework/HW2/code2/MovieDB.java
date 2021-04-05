@@ -8,11 +8,17 @@ import java.util.NoSuchElementException;
  * 유지하는 데이터베이스이다. 
  */
 public class MovieDB {
+	
+	public Node<MyLinkedList<String>> fullList;
+	
     public MovieDB() {
         // FIXME implement this
     	
     	// HINT: MovieDBGenre 클래스를 정렬된 상태로 유지하기 위한 
     	// MyLinkedList 타입의 멤버 변수를 초기화 한다.
+    	
+    	fullList = new Node<>();
+    	
     }
 
     public void insert(MovieDBItem item) {
@@ -21,7 +27,64 @@ public class MovieDB {
 
     	// Printing functionality is provided for the sake of debugging.
         // This code should be removed before submitting your work.
-        System.err.printf("[trace] MovieDB: INSERT [%s] [%s]\n", item.getGenre(), item.getTitle());
+    	
+    	String currName = null;
+    	String nextName = null;
+    	
+    	String currGenre;
+    	String currTitle;
+    	
+    	int yesGenre = 0; 
+    	int midBreak = 0;
+    	
+    	Node<MyLinkedList<String>> stopPoint = fullList.getNext();
+    	Node<MyLinkedList<String>> nextPoint;
+    	
+    	Node<String> titlePoint;
+    
+    	while(stopPoint!=null) {
+    		midBreak = 0;
+    		currName = stopPoint.getItem().getName();
+    		nextPoint = stopPoint.getNext();
+    		
+    		if(nextPoint!=null) {
+    			nextName = nextPoint.getItem().getName();
+    		}else {
+    			nextName = "z";
+    		}
+    		
+    		if(item.getGenre().equals(currName)) { // already genre and add
+    			yesGenre = 1;
+    			break;
+    		}else if(item.getGenre().compareTo(nextName)>0) {
+    			stopPoint = nextPoint;
+    			
+    			continue;
+    		}else {
+    			yesGenre = 0;
+    			midBreak = 1;
+    			break;
+    		}
+
+    	}
+    
+    	
+    	
+    	if(yesGenre ==1) {
+    		stopPoint.getItem().add(item.getTitle());
+    	}else if(midBreak == 0){
+    		MyLinkedList<String> newList = new MyLinkedList<>(item.getGenre());
+    		newList.add(item.getTitle());
+        	fullList.insertLast(newList);
+    	}else {
+    		
+    		MyLinkedList<String> newList = new MyLinkedList<>(item.getGenre());
+    		newList.add(item.getTitle());
+    		stopPoint.insertNext(newList);
+    	}
+    	
+
+        //System.err.printf("[trace] MovieDB: INSERT [%s] [%s]\n", item.getGenre(), item.getTitle());
     }
 
     public void delete(MovieDBItem item) {
@@ -64,12 +127,29 @@ public class MovieDB {
 
     	// Printing functionality is provided for the sake of debugging.
         // This code should be removed before submitting your work.
-        System.err.printf("[trace] MovieDB: ITEMS\n");
+        //System.err.printf("[trace] MovieDB: ITEMS\n");
 
     	// FIXME remove this code and return an appropriate MyLinkedList<MovieDBItem> instance.
     	// This code is supplied for avoiding compilation error.   
         MyLinkedList<MovieDBItem> results = new MyLinkedList<MovieDBItem>();
         
+        Node<MyLinkedList<String>> stopPoint = fullList.getNext();
+        Node<String> titlePoint;
+        String currGenre;
+        String currTitle;
+        
+        stopPoint = fullList.getNext();
+        while(stopPoint!=null) {
+    		titlePoint = stopPoint.getItem().head;
+    		currGenre = stopPoint.getItem().getName();
+    		while(titlePoint.getNext() != null) {
+    			currTitle = titlePoint.getNext().getItem();
+    			results.add(new MovieDBItem(currGenre, currTitle));
+    			titlePoint = titlePoint.getNext();
+    		}
+    		stopPoint = stopPoint.getNext();
+    	}
+       
     	return results;
     }
 }

@@ -4,16 +4,21 @@ import java.util.NoSuchElementException;
 
 public class MyLinkedList<T> implements ListInterface<T> {
 	// dummy head
-	Node<T> head;
+	public String name;
+	public Node<T> head;
 	int numItems;
 
 	public MyLinkedList() {
+		name = null;
+		head = new Node<T>(null);
+	}
+	
+	public MyLinkedList(T mgenre) {
+		name = (String)mgenre;
 		head = new Node<T>(null);
 	}
 
     /**
-     * 
-     * 
      * <pre>
      *  for (T item: iterable) {
      *  	item.someMethod();
@@ -38,6 +43,14 @@ public class MyLinkedList<T> implements ListInterface<T> {
 		return numItems;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
 	@Override
 	public T first() {
 		return head.getNext().getItem();
@@ -52,22 +65,31 @@ public class MyLinkedList<T> implements ListInterface<T> {
 		last.insertNext(item);
 		numItems += 1;
 	}
+	
+	public void insert(Node<T> Point, T item) {
+		Point.insertNext(item);
+		numItems += 1;
+	}
 
 	@Override
 	public void removeAll() {
 		head.setNext(null);
+		numItems = 0;
 	}
+
 }
 
 class MyLinkedListIterator<T> implements Iterator<T> {
 	// FIXME implement this
 	// Implement the iterator for MyLinkedList.
 	// You have to maintain the current position of the iterator.
+	private String name;
 	private MyLinkedList<T> list;
 	private Node<T> curr;
 	private Node<T> prev;
 
 	public MyLinkedListIterator(MyLinkedList<T> list) {
+		this.name = list.name;
 		this.list = list;
 		this.curr = list.head;
 		this.prev = null;
@@ -78,6 +100,14 @@ class MyLinkedListIterator<T> implements Iterator<T> {
 		return curr.getNext() != null;
 	}
 
+	public Node<T> getCurr(){
+		return curr;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
 	@Override
 	public T next() {
 		if (!hasNext())
@@ -89,6 +119,15 @@ class MyLinkedListIterator<T> implements Iterator<T> {
 		return curr.getItem();
 	}
 
+	public void add(T data) {
+		Node<T> newNode = new Node(data);
+		
+		newNode.setNext(curr.getNext());
+		curr.setNext(newNode);
+		
+		list.numItems += 1;
+		
+	}
 	@Override
 	public void remove() {
 		if (prev == null)

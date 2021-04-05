@@ -92,6 +92,7 @@ public class MovieDatabaseConsole {
 	private static ConsoleCommand parse(String input) throws Exception {
 		// 우선 어떤 종류의 ConsoleCommand 를 생성할 것인지 결정한다.
 		ConsoleCommand command = null;
+		input = input.trim();
 		if (input.startsWith("INSERT")) {
 			command = new InsertCmd();
 		} else if (input.startsWith("DELETE")) {
