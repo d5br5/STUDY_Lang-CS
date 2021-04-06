@@ -5,7 +5,7 @@ scp -r D:\dev\github\snu_data_structure\homework\HW1\code\BigInteger.java 2015-1
 scp -r D:\dev\github\snu_data_structure\homework\HW1\code\BigInteger.java 2015-18362@ds0.snucse.org:~/HW1-6/1-BigInteger
 
 
-scp -r D:\dev\github\snu_data_structure\homework\HW2\HW2-3 2015-18362@ds0.snucse.org:~
+scp -r D:\dev\github\snu_data_structure\homework\HW2\HW2-7 2015-18362@ds0.snucse.org:~
 scp -r D:\dev\github\snu_data_structure\homework\HW2\HW2-3\MovieDB.java 2015-18362@ds0.snucse.org:~/HW2-2
 
 
