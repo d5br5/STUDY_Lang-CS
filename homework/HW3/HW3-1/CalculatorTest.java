@@ -1,18 +1,17 @@
-
 import java.util.Stack;
+import java.io.*;
 
 public class CalculatorTest
 {
 	public static void main(String args[])
 	{
-//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int i = 0;
-		while (i++<1) //true
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		while (true)
 		{
 			try
 			{
-//				String input = br.readLine();
-				String input = "1)+1)";
+				String input = br.readLine();
 				if (input.compareTo("q") == 0)
 					break;
 
@@ -20,33 +19,33 @@ public class CalculatorTest
 			}
 			catch (Exception e)
 			{
-				System.out.println("error : " + e.toString());
+				System.out.println("error :  " + e.toString());
 			}
 		}
 	}
 
 	private static void command(String input)
 	{
-		
+
 		try {
 			//trim input -> src : https://blog.naver.com/success87pch/220776190125
-			input = input.replaceAll("\t", " ").trim().replaceAll(" +", " "); 		
-						
+			input = input.replaceAll("\t", " ").trim().replaceAll(" +", " ");
+
 			Stack<String> parsedInput = makeStack(input);
 			Stack<String> postfix = convert(reverse(parsedInput));
-			
+
 			int postfixSize = postfix.size();
 			String[] postfixArr = new String[postfixSize];
 			Stack<Long> resultStack;
 			long result;
-			
+
 			if(postfix.peek()!="ERROR") {
-				Stack<String> reversedPostfix = reverse(postfix); 
+				Stack<String> reversedPostfix = reverse(postfix);
 				for(int i = 0; i<postfixSize ; i++) {
-					postfixArr[i] = reversedPostfix.pop(); 
+					postfixArr[i] = reversedPostfix.pop();
 				}
 				resultStack = eval(postfixArr);
-				
+
 				if(resultStack.size()!=1) {
 					System.out.println("ERROR");
 					return;
@@ -59,28 +58,28 @@ public class CalculatorTest
 				System.out.println("ERROR");
 				return;
 			}
-			
+
 		}catch(Exception e){
 			System.out.println("ERROR");
-			
+
 		}
-		
+
 	}
-		
-	
+
+
 	public static Stack<Long> eval(String[] pfArr){  // src : lecture code
 		long A, B;
-		
+
 		Stack<Long> result = new Stack<>();
 		Stack<Long> error = new Stack<>();
-		
+
 		for(int i =0; i<pfArr.length; i++) {
 			String str = pfArr[i];
-			if(str.equals("~")) { 
+			if(str.equals("~")) {
 				A = result.pop();
 				A *= -1;
 				result.push(A);
-			}else if(isOperator(str)) {		// operator 
+			}else if(isOperator(str)) {		// operator
 				A = result.pop();
 				B = result.pop();
 				if(A==0&&(str.equals("/")||str.equals("%"))) {
@@ -90,38 +89,38 @@ public class CalculatorTest
 					return error;
 				}
 				result.push(oper(A,B,str));
-				
+
 			}else {		// number
 				result.push(Long.parseLong(str));
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	public static long oper(long a,  long b, String oper) { // src : lecture code
 		long val = 0;
 		switch(oper) {
-		case "+" : val = b+a; break;
-		case "-" : val = b-a; break;
-		case "*" : val = b*a; break;
-		case "/" : val = b/a; break;
-		case "%" : val = b%a; break;
-		case "^" : val = (long)Math.pow(b, a); break;
+			case "+" : val = b+a; break;
+			case "-" : val = b-a; break;
+			case "*" : val = b*a; break;
+			case "/" : val = b/a; break;
+			case "%" : val = b%a; break;
+			case "^" : val = (long)Math.pow(b, a); break;
 		}
 		return val;
 	}
-	
+
 	public static Stack<String> convert(Stack<String> arr) {
-		
+
 		Stack<String> postfix = new Stack<>();
 		Stack<String> tmp = new Stack<>();
 		Stack<Boolean> parenthesis = new Stack<>();
 		Stack<String> error = new Stack<>();
-		
+
 		while(!arr.empty()) {
-			
-			if(!isOperator(arr.peek())) {	// number	
+
+			if(!isOperator(arr.peek())) {	// number
 				postfix.push(arr.pop());
 			}else {		// operator
 				if(arr.peek().equals("(")) {
@@ -145,10 +144,10 @@ public class CalculatorTest
 						parenthesis.push(false);
 						return error;
 					}
-						
+
 					arr.pop();
 					if(!tmp.empty())tmp.pop();
-					
+
 					continue;
 				}
 				if(tmp.empty()&&postfix.empty()&&arr.peek().equals("-")) { //first - is ~
@@ -176,7 +175,7 @@ public class CalculatorTest
 					continue;
 				}
 				if(beforeMustWait(tmp.peek(), arr.peek())) {	// compare wait list
-					
+
 					tmp.push(arr.pop());
 					if(arr.peek().equals("-")) {
 						while(arr.peek().equals("-")) {
@@ -186,7 +185,7 @@ public class CalculatorTest
 					}
 				}else {
 					while(!tmp.empty()&&!beforeMustWait(tmp.peek(), arr.peek())) {
-						
+
 						postfix.push(tmp.pop());
 					}
 					tmp.push(arr.pop());
@@ -196,31 +195,31 @@ public class CalculatorTest
 							tmp.push("~");
 						}
 					}
-						
+
 				}
 			}
 		}
-		
-		
+
+
 		if(!parenthesis.empty()) {
 			error.push("ERROR");
-			
+
 			return error;
 		}
-		
+
 		while(!tmp.empty()) {
 			postfix.push(tmp.pop());
 		}
-		
+
 		return postfix;
 	}
-	
+
 	public static Stack<String> makeStack(String input){
-		
+
 		Stack<String> parsed = new Stack<>();
-		
+
 		String strLump="";
-		
+
 		for(int i=0; i<input.length(); i++) {
 			String slice = Character.toString(input.charAt(i));
 			if(slice.equals(" ")) {
@@ -233,20 +232,20 @@ public class CalculatorTest
 				if(strLump.length()!=0) {
 					parsed.push(strLump);
 					parsed.push(slice);
-					strLump="";	
+					strLump="";
 				}else {
 					parsed.push(slice);
 				}
 			}else {
-				strLump += slice;			
+				strLump += slice;
 			}
-			
+
 		}
 		if(strLump.length()!=0) parsed.push(strLump);
-		
+
 		return parsed;
 	}
-	
+
 	public static Stack<String> reverse(Stack<String> input){
 		Stack<String> reverseParsed = new Stack<>();
 		while(input.size()>0) {
@@ -254,12 +253,12 @@ public class CalculatorTest
 		}
 		return reverseParsed;
 	}
-	
+
 	public static boolean isOperator(String str) {
 		String operator = "+-*/%^()";
 		return operator.contains(str);
 	}
-	
+
 	public static boolean beforeMustWait(String before, String after) {
 		if(after.equals("(")) return true;
 		if(before.equals("(")) return true;
@@ -269,7 +268,7 @@ public class CalculatorTest
 		if(after.equals("~")) return true;
 		if("+-".contains(before)&&"+-".contains(after)) return false;
 		if("*/%".contains(before)&&"*/%".contains(after)) return false;
-		
+
 		if(before.equals("^")) return false;
 		if(before.equals("~")) {
 			if(after.equals("^")) return true;
@@ -279,12 +278,12 @@ public class CalculatorTest
 			if("^~".contains(after)) return true;
 			else return false;
 		}
-		
+
 		if("+-".contains(before)) return true;
-		
+
 		return false;
 	}
-	
+
 	public static String toString(Stack<String> Stack) {
 		String res="";
 		while(!Stack.empty()) {
@@ -293,7 +292,7 @@ public class CalculatorTest
 		}
 		return res;
 	}
-	
+
 	public static String toString(String[] arr) {
 		String res="";
 		for(int i=0; i<arr.length-1; i++) {
@@ -303,6 +302,5 @@ public class CalculatorTest
 		res+= arr[arr.length-1];
 		return res;
 	}
-	
-	
+
 }
