@@ -5,6 +5,9 @@
 
 ## 과제 List
 
-- Big Int Calculator
+- Big Int Calculator (사칙연산)
 - Movie Database Console
-- 
+- Infix to Postfix Calculator
+- Sorting Method Comparison
+- AVL Tree
+- Subway route search
