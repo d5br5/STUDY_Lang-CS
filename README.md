@@ -5,7 +5,7 @@
 
 ## 과제 List
 
-- [Big Int Calculator (사칙연산)](https://github.com/d5br5/snu_data_structure/tree/main/HW3, "HW1 Link")
+- [Big Int Calculator](https://github.com/d5br5/snu_data_structure/tree/main/HW3, "HW1 Link")
 - [Movie Database Console](https://github.com/d5br5/snu_data_structure/tree/main/HW2, "HW2 Link")
 - [Infix to Postfix Calculator](https://github.com/d5br5/snu_data_structure/tree/main/HW3, "HW3 Link")
 - [Sorting Method Comparison](https://github.com/d5br5/snu_data_structure/tree/main/HW4, "HW4 Link")
