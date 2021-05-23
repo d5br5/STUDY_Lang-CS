@@ -1,14 +1,14 @@
 import java.nio.charset.StandardCharsets;
 
-public class OpenHashTable<T> { // src : lecture note
+public class OpenHashTable<T extends Comparable<T>> { // src : lecture note
 	public AVLTree<T>[] table;
 	int numItems;
 	
 	static final Integer NOT_FOUND = -1;
 	
 	
+	@SuppressWarnings("unchecked")
 	public OpenHashTable(int n) {
-		
 		table = new AVLTree[n];
 		numItems=0;
 	}
@@ -34,7 +34,7 @@ public class OpenHashTable<T> { // src : lecture note
 		else return slot;
 	}
 	
-	public void insert(int k, int v, Comparable<T> x) {
+	public void insert(int k, int v, T x) {
 		int slot = hash((T)x);
 		
 		if(table[slot]==null) {
