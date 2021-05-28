@@ -27,6 +27,4 @@ public class AVLNode<T extends Comparable<T>> { // src : lecture Note
 		list = new List<Integer>();
 		height = h;
 	}
-	
-	
 }

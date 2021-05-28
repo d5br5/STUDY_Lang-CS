@@ -245,9 +245,15 @@ public class SortingTest
 	private static int[] DoRadixSort(int[] value)
 	{
 		int max = 0;
+		int min = 0;
 		for(int i=0; i<value.length; i++) {
 			if(max<value[i]) max = value[i];
+			if(min>value[i]) min = value[i];
 		}
+
+		min = Math.abs(min);
+		if(min>max) max = min;
+
 		int maxsize = (int)(Math.log10(max)+1);		// src : https://oneprogram.tistory.com/116
 
 		Queue<Integer> Q0 = new LinkedList<>();		// src : https://www.programiz.com/java-programming/queue
