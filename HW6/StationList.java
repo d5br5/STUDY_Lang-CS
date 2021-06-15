@@ -26,6 +26,30 @@ public class StationList {
 		return stationLength;
 	}
 	
+	public Node searchByStNum(String stNum) {
+		iter = stations.iterator();
+		Node curr;
+		while(iter.hasNext()) {
+			curr=iter.next();
+			if(curr.getStationNumber().equals(stNum)) {
+				return curr;
+			}
+		}
+		return null;
+	}
+	
+	public Node searchByKey(int key) {
+		iter = stations.iterator();
+		Node curr;
+		while(iter.hasNext()) {
+			curr = iter.next();
+			if(curr.getKey() == key) {
+				return curr;
+			}
+		}
+		return null;
+	}
+	
 	public Node searchStation(String stName) {
 		iter = stations.iterator();
 		Node curr;
@@ -44,6 +68,17 @@ public class StationList {
 		while(iter.hasNext()) {
 			curr=iter.next();
 			System.out.println(curr.getStationName());
+		}
+	}
+	
+	public void addCrossToAdj(int[][] mat) {
+		iter = stations.iterator();
+		Node curr;
+		while(iter.hasNext()) {
+			curr = iter.next();
+			if(curr.isCross()) {
+				curr.addAllCrossToAdj( curr.getKey(), mat);
+			}
 		}
 	}
 }
