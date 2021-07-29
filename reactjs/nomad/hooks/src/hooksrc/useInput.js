@@ -1,3 +1,5 @@
+import {useState, useRef} from "react";
+
 export const useInput = (initialValue, validator) => {
     const [value, setValue] = useState(initialValue);
     function onChange(e) {

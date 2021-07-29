@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="22052eb6-4e9c-44c0-857e-c263ede79eb3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useAxios/useAxios.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useAxios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useBeforeLeave/useBeforeLeave.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useBeforeLeave.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useClick/useClick.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useClick.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useConfirm/useConfirm.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useConfirm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useFadeIn/useFadeIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useFadeIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useFullscreen/useFullscreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useFullscreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useInput/useInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useInput.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useNetwork/useNetwork.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useNetwork.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useNotification/useNotification.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useNotification.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/usePreventLeave/usePreventLeave.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/usePreventLeave.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useScroll/useScroll.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useScroll.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useTabs/useTabs.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useTabs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/useTitle/useTitle.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../../reactjs/nomad/hooks/src/hooksrc/useTitle.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectId" id="1vx3lbkKQP4rYD5GLT78cNRSe7y" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="22052eb6-4e9c-44c0-857e-c263ede79eb3" name="Default Changelist" comment="" />
+      <created>1627490065110</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1627490065110</updated>
+      <workItem from="1627490066185" duration="618000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
