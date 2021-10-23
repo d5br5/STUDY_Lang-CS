@@ -50,10 +50,8 @@ public class Node {
 				return true;
 			}
 		}
-		
 		return false;
 	}
-	
 	
 	public void printAllCross() {
 		crossIter = crossStations.iterator();
@@ -116,9 +114,4 @@ public class Node {
 			mat[curr.getKey()]=0;
 		}
 	}
-	
-	
-	
-	
-	
 }

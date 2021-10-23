@@ -201,9 +201,7 @@ public class LineList {
 				routeDetailWithKey.push(DFSKey);		
 				break;
 			}
-		}	
-		
-				
+		}
 //		System.out.println("total time : "+dist[endKey]);
 		printRoute(routeDetailWithKey);
 		System.out.println(dist[lastVisited]);
