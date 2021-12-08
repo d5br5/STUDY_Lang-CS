@@ -1,4 +1,5 @@
-console.log(score);
-score = 80;
-var score;
-console.log(score);
+let i = 10;
+for (let i = 0; i < 5; i++) {
+	console.log(i);
+}
+console.log(i);
