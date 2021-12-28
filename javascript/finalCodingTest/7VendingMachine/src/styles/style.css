@@ -1,0 +1,293 @@
+@charset "utf-8";
+
+/* 유틸리티 */
+
+.ir {
+	display: block;
+	overflow: hidden;
+	position: absolute;
+	text-indent: -9999px;
+	line-height: 0;
+	font-size: 1px;
+	color: transparent;
+}
+
+.img-item {
+	display: block;
+}
+
+/* 레이아웃 */
+body {
+	background-color: #eae8fe;
+}
+
+#app {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 0 28px;
+	padding-top: 247px;
+	font-family: "Noto Sans KR", sans-serif;
+}
+
+#app .vending-machine,
+#app .my-info {
+	width: 360px;
+	background-color: #fff;
+	box-sizing: border-box;
+}
+
+/* 타이틀 */
+#app .tit-app {
+	width: 100%;
+	max-width: 386px;
+	height: 180px;
+	top: 0;
+	background: no-repeat center / 100% 100% url(../images/Logo_img.png);
+}
+
+/* 자판기 스타일 */
+#app .vending-machine {
+	position: relative;
+	padding: 31px 27px 28px;
+}
+
+/* 자판기 아이템 */
+.vending-machine .list-item {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-content: space-between;
+}
+
+.vending-machine .list-item li {
+	position: relative;
+	width: 30%;
+	height: 130px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+}
+.vending-machine .list-item li:active::before {
+	display: block;
+	position: absolute;
+	content: "";
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	border-radius: 10px;
+	border: 3px solid #6327fe;
+	box-sizing: border-box;
+}
+
+.vending-machine .list-item li.sold-out::before {
+	display: block;
+	position: absolute;
+	content: "";
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	border-radius: 10px;
+	background: no-repeat center / 58px 45px url(../images/Sold-out.png)
+		rgba(0, 0, 0, 0.8);
+}
+
+.vending-machine .list-item li.sold-out {
+	pointer-events: none;
+}
+
+.vending-machine .list-item li:nth-child(3) ~ li {
+	margin-top: 12px;
+}
+
+.vending-machine .btn-item {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.vending-machine .list-item .img-item {
+	width: 36px;
+	height: 65px;
+	margin: 0 auto;
+}
+
+.vending-machine .tit-item {
+	font-size: 9px;
+	display: block;
+	margin: 6px 0 7px;
+}
+
+.vending-machine .txt-price {
+	display: inline-block;
+	font-size: 12px;
+	padding: 5px 16px;
+	background: #6327fe;
+	border-radius: 50px;
+	color: white;
+}
+
+/* 잔액 반환 */
+.vending-machine .cont-return,
+.vending-machine .cont-put,
+.vending-machine .cont-get {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 12px;
+}
+.cont-return .info-balance,
+.cont-put .input-put,
+.cont-get .list-item-staged {
+	width: 65%;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+.cont-return .btn-return,
+.cont-put .btn-put,
+.cont-get .btn-get {
+	width: 30%;
+	font-size: 13px;
+	border-radius: 5px;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+}
+
+.vending-machine .cont-return {
+	margin-top: 20px;
+}
+
+.cont-return .info-balance {
+	overflow: hidden;
+	padding: 6px 10px;
+	font-size: 14px;
+	background-color: #eae8fe;
+}
+
+.info-balance .txt-balance {
+	float: right;
+}
+
+.cont-put .input-put {
+	padding: 6px 6px 7px;
+	border: 1px solid #bdbdbd;
+}
+
+.cont-get .btn-get {
+	font-weight: 700;
+	background-color: #6327fe;
+	color: #fff;
+}
+.cont-get .list-item-staged {
+	height: 106px;
+	overflow-y: scroll;
+	border: 1px solid #bdbdbd;
+	background-color: #eae8fe;
+	box-sizing: border-box;
+	padding: 12px;
+}
+.list-item-staged li {
+	overflow: hidden;
+	padding: 6px 8px 7px 10px;
+	border-radius: 5px;
+	background-color: #fff;
+	box-sizing: border-box;
+}
+.list-item-staged li + li {
+	margin-top: 6px;
+}
+.list-item-staged .img-item,
+.list-item-staged .txt-item {
+	float: left;
+}
+.list-item-staged .img-item {
+	width: 18px;
+	height: 33px;
+}
+.list-item-staged .txt-item {
+	margin-left: 10px;
+	line-height: 33px;
+	font-size: 9px;
+}
+.list-item-staged .num-counter {
+	display: flex;
+	float: right;
+	width: 30px;
+	height: 30px;
+	border: 1px solid #bdbdbd;
+	box-sizing: border-box;
+	border-radius: 5px;
+	justify-content: center;
+	align-items: center;
+}
+
+/* 나의 정보 */
+#app .my-info {
+	background-color: #eae8fe;
+}
+/* 소지금 */
+.my-info .cont-mymoney {
+	padding: 9px 27px;
+	background-color: #fff;
+}
+.cont-mymoney .info-mymoney {
+	padding: 6px 10px;
+	line-height: 20px;
+	background-color: #eae8fe;
+	border-radius: 5px;
+}
+
+.info-mymoney .txt-mymoney {
+	float: right;
+	font-weight: 700;
+}
+
+/* 획득한 음료 */
+.my-info .cont-myitems {
+	margin-top: 20px;
+	padding: 25px 27px 32px;
+	background: #fff;
+}
+
+.cont-myitems .tit-myitem {
+	display: block;
+	text-align: center;
+	margin-bottom: 13px;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 20px;
+}
+.cont-myitems .list-item-staged {
+	overflow-y: scroll;
+	height: 350px;
+	padding: 12px 12px 0;
+	background-color: #eae8fe;
+	border: 1px solid #bdbdbd;
+	box-sizing: border-box;
+	border-radius: 5px;
+}
+
+.cont-myitems .txt-total {
+	display: block;
+	text-align: right;
+	font-size: 12px;
+	line-height: 17px;
+	margin-top: 10px;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+	body {
+		background-color: #fff;
+	}
+	#app {
+		padding-top: 65px;
+	}
+	#app .tit-app {
+		width: 166px;
+		height: 71px;
+	}
+	.my-info .cont-myitems {
+		margin-top: 0px;
+	}
+}
