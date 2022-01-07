@@ -6,8 +6,7 @@ export default function Home() {
 
 	return (
 		<div>
-			<NavBar />
-			<h1>hello {counter}</h1>
+			<h1>Index {counter}</h1>
 			<button onClick={() => setCounter((prev) => prev + 1)}>+</button>
 		</div>
 	);
