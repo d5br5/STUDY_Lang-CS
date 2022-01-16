@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import noResultImg from "../../asset/search.png";
+import noResultImg from "../../img/search.png";
 
 const Container = styled.div`
 	width: 400px;
