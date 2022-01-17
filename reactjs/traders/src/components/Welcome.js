@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import styled from "styled-components";
-import logo from "../asset/logo.png";
+import logo from "../img/logo.png";
 
 const Container = styled.div`
 	width: 300px;

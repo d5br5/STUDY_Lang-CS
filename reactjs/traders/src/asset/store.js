@@ -26,7 +26,6 @@ const reducer = (state = originalState, action) => {
 				payload: {keyword, data: searchData},
 			} = action;
 			const pageLength = Math.ceil(searchData.num_found / 16);
-			console.log(searchData);
 			return {
 				...state,
 				keyword,

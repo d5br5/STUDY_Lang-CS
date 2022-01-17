@@ -76,7 +76,6 @@ function SearchBox({onSearch}) {
 			setTimeout(async function () {
 				const {keywords} = await autoComplete(e.target.value);
 				setAutoKeyList(keywords);
-				console.log(keywords);
 			}, 100)
 		);
 	}
