@@ -6,27 +6,28 @@ module.exports = {
     jest: true,
   },
   extends: [
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
-  plugins: ['prettier', '@typescript-eslint'],
+  plugins: ["prettier", "@typescript-eslint"],
   rules: {
-    'prettier/prettier': [
-      'error',
+    "prettier/prettier": [
+      "error",
       {
-        singleQuote: true,
+        singleQuote: false,
         semi: true,
-        useTabs: false,
+        useTabs: true,
         tabWidth: 2,
         printWidth: 80,
         bracketSpacing: true,
-        arrowParens: 'avoid',
+        "arrow-parens": "as-needed",
+        endOfLine: "auto",
       },
     ],
-    '@typescript-eslint/no-explicit-any': 'off',
-    'prefer-const': 'off',
+    "@typescript-eslint/no-explicit-any": "off",
+    "prefer-const": "off",
   },
   parserOptions: {
-    parser: '@typescript-eslint/parser',
+    parser: "@typescript-eslint/parser",
   },
 };

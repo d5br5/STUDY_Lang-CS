@@ -1,6 +1,6 @@
-function sum(a, b?: number) {
+function sum1(a, b?: number) {
 	return a + b;
 }
 
-sum(10, 20);
-sum(10);
+sum1(10, 20);
+sum1(10);

@@ -10,7 +10,7 @@ let add1: [string[], [number, string]] = [
 
 let obj: object = {};
 
-type person = {name: string; age: number};
+type person = { name: string; age: number };
 let person: person = {
 	name: "capt",
 	age: 100,
