@@ -1,11 +1,16 @@
 <template>
+	<Modal :roomdata="roomdata" :selected="selected" :modalState="modalState" />
+	<Card v-for="(v, i) in roomdata" :key="i" :v="v" :i="i" />
+	<!--
 	<div class="black-bg" v-if="modalState">
 		<div class="white-bg" @click="modalState = false">
-			<h4>상세 페이지임</h4>
-			<p>상세페이지 내용임</p>
+			<img :src="roomdata[selected].image" width="500" alt="" />
+			<h4>{{ roomdata[selected].title }}</h4>
+			<p>{{ roomdata[selected].content }}</p>
+			<p>{{ roomdata[selected].price }}원 입니다.</p>
+			<Discount />
 		</div>
 	</div>
-
 	<div>
 		<div :key="i" v-for="(v, i) in products">
 			<h2 @click="modalState = true">{{ v }}</h2>
@@ -13,26 +18,22 @@
 			<span>신고 수 : {{ reported[i] }}</span>
 		</div>
 	</div>
-	<div>
-		<div :key="i" v-for="(v, i) in roomdata">
-			<img :src="v.image" alt="" class="roomImg" />
-			<h2>{{ v.title }}</h2>
-			<h3>{{ v.price }}원</h3>
-			<p>{{ v.content }}</p>
-		</div>
-	</div>
+	-->
 </template>
 
 <script>
 import roomdata from "./assets/oneroom";
+import Modal from "./components/Modal.vue";
+import Card from "./components/Card.vue";
 
 export default {
 	name: "App",
-	components: {},
+	components: { Modal, Card },
 	data() {
 		return {
 			products: ["역삼동 빌라", "강남동 원룸", "천호동 원룸"],
 			reported: [0, 0, 0],
+			selected: 0,
 			modalState: false,
 			roomdata,
 		};
@@ -40,6 +41,10 @@ export default {
 	methods: {
 		countUp(index) {
 			this.reported[index]++;
+		},
+		clickDetail(index) {
+			this.selected = index;
+			this.modalState = true;
 		},
 	},
 };
@@ -58,13 +63,14 @@ div {
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5);
 	position: fixed;
-	padding: 20px;
+	padding: 200px 100px;
 }
 .white-bg {
-	width: 100%;
+	width: 50%;
 	background: white;
 	border-radius: 8px;
 	padding: 20px;
+	margin: 0 auto;
 }
 
 .roomImg {
@@ -77,6 +83,5 @@ div {
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
 	color: #2c3e50;
-	margin-top: 60px;
 }
 </style>
