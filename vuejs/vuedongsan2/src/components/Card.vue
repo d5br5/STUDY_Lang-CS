@@ -1,10 +1,7 @@
 <template>
-	<!--
-  <div :key="i" v-for="(v, i) in roomdata" @click="clickDetail(i)">
-  -->
-	<div :key="i" v-for="(v, i) in roomdata">
+	<div>
 		<img :src="v.image" alt="" class="roomImg" />
-		<h2>{{ v.title }}</h2>
+		<h2 @click="$emit('openModal', i)">{{ v.title }}</h2>
 		<h3>{{ v.price }}원</h3>
 		<p>{{ v.content }}</p>
 	</div>

@@ -1,27 +1,65 @@
 <template>
 	<div class="black-bg" v-if="modalState">
 		<div class="white-bg">
-			<img :src="roomdata[selected].image" width="500" alt="" />
-			<h4>{{ roomdata[selected].title }}</h4>
-			<p>{{ roomdata[selected].content }}</p>
-			<p>{{ roomdata[selected].price }}원 입니다.</p>
-			<Discount />
+			<img :src="room.image" width="500" alt="" />
+			<h4>{{ room.title }}</h4>
+			<p>{{ room.content }}</p>
+			<!-- <input type="text" @input="inputChange" /> -->
+			<input v-model.number="month" />
+			<!-- <input type="range" min="1" max="12" v-model="month" /> -->
+			<!-- <textarea v-model="month" id="" cols="30" rows="10"></textarea>
+			<select v-model="month" id="">
+				<option value=""></option>
+			</select> -->
+			<p>{{ month }}개월 선택 : {{ room.price * month }}원 입니다.</p>
+
+			<button @click="$emit('closeModal')">close</button>
 		</div>
-		<!-- <button @click="modalState = false">close</button> -->
 	</div>
 </template>
 
 <script>
-import Discount from "./Discount.vue";
-
 export default {
 	name: "Modal",
-	props: {
-		roomdata: Array,
-		modalState: Boolean,
-		selected: Number,
+	data() {
+		return { month: 1 };
 	},
-	components: { Discount },
+	props: {
+		// props : readOnly
+		modalState: Boolean,
+		room: Object,
+	},
+
+	methods: {
+		closeModal() {
+			this.$emit("closeModal");
+		},
+		inputChange(e) {
+			this.month = e.target.value || 0;
+		},
+		resetInput() {
+			console.log("resetttt");
+			this.month = 1;
+		},
+	},
+	updated() {
+		if (this.month === 2) {
+			alert("2개월은 안팝니다.");
+			this.month = 3;
+		}
+	},
+	watch: {
+		month(after) {
+			if (isNaN(after)) {
+				alert("문자 입력 금지");
+				this.resetInput();
+			}
+			if (after > 12) {
+				alert("no more than 12");
+				this.resetInput();
+			}
+		},
+	},
 };
 </script>
 
