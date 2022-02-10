@@ -1,19 +1,32 @@
 <template>
 	<div class="header">
-		<ul class="header-button-left">
+		<ul class="header-button-left" v-if="step !== 0" @click="stepBack">
 			<li>Cancel</li>
 		</ul>
-		<ul class="header-button-right">
-			<li>Next</li>
+		<ul class="header-button-right" v-if="step !== 0" @click="stepNext">
+			<li>{{ step === 1 ? "next" : "done" }}</li>
 		</ul>
 		<img src="./assets/logo.png" class="logo" />
 	</div>
 
-	<Container />
+	<Container
+		:instaData="instaData"
+		:step="step"
+		:newImage="newImage"
+		@onDescChange="setDesc"
+	/>
 
-	<div class="footer">
+	<button @click="loadMore" v-if="step === 0">더보기</button>
+	<div class="footer" v-if="step === 0">
 		<ul class="footer-button-plus">
-			<input type="file" id="file" class="inputfile" />
+			<input
+				@change="uploadFile"
+				ref="imageUploader"
+				accept="image/*"
+				type="file"
+				id="file"
+				class="inputfile"
+			/>
 			<label for="file" class="input-plus">+</label>
 		</ul>
 	</div>
@@ -21,9 +34,59 @@
 
 <script>
 import Container from "./components/Container.vue";
+import instaData from "./assets/data";
+import axios from "axios";
+const loadURL = (id) => `https://codingapple1.github.io/vue/more${id}.json`;
+
 export default {
 	name: "App",
 	components: { Container },
+	data() {
+		return { instaData, loadnum: 0, step: 0, newImage: "", description: "" };
+	},
+	methods: {
+		async loadMore() {
+			const { data } = await axios.get(loadURL(this.loadnum));
+			if (this.loadnum === 1) {
+				this.loadnum = 0;
+			} else {
+				this.loadnum = 1;
+			}
+			this.instaData.push(data);
+		},
+		uploadFile(e) {
+			let file = e.target.files;
+			this.newImage = URL.createObjectURL(file[0]);
+			this.$refs.imageUploader.value = "";
+			this.step = 1;
+		},
+		stepBack() {
+			if (this.step === 1 || this.step === 2) this.step--;
+		},
+		stepNext() {
+			if (this.step === 2) {
+				const newPost = {
+					name: "dohyung Kim",
+					userImage: this.newImage,
+					postImage: this.newImage,
+					likes: 0,
+					date: Date.now(),
+					liked: false,
+					content: this.description,
+					filter: "perpetua",
+				};
+				this.instaData.unshift(newPost);
+				this.step = 0;
+				this.description = "";
+				this.newImage = "";
+				return;
+			}
+			if (this.step === 0 || this.step === 1) this.step++;
+		},
+		setDesc(desc) {
+			this.description = desc;
+		},
+	},
 };
 </script>
 
