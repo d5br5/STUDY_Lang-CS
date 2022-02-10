@@ -22,15 +22,16 @@
 			</div>
 		</div>
 	</nav>
-	<router-view />
+	<router-view :articles="articles" />
 </template>
 
 <script>
+import articles from "./assets/articles";
 export default {
 	name: "App",
 	components: {},
 	data() {
-		return {};
+		return { articles };
 	},
 };
 </script>

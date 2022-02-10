@@ -6,19 +6,21 @@
 		<h4>{{ article.date }}</h4>
 		<p>{{ article.content }}</p>
 	</div>
+	<router-view />
 </template>
 
 <script>
-import articles from "../assets/articles";
-
 export default {
 	name: "detail",
 	data() {
 		const pageNum = this.$route.params.page;
 		return {
 			page: pageNum,
-			article: articles[pageNum],
+			article: this.articles[pageNum],
 		};
+	},
+	props: {
+		articles: Array,
 	},
 };
 </script>

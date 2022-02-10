@@ -1,20 +1,20 @@
 <template>
 	<div v-for="(article, i) in articles" :key="i">
-		<router-link :to="`/detail/${i}`" class="nav-link active">
-			<h3>{{ article.title }}</h3>
-		</router-link>
+		<!-- <router-link :to="`/detail/${i}`" class="nav-link active"> -->
+		<h3 @click="$router.push(`/detail/${i}`)">{{ article.title }}</h3>
+		<!-- </router-link> -->
 		<h4>{{ article.date }}</h4>
 	</div>
 </template>
 
 <script>
-import articles from "../assets/articles";
 export default {
 	name: "lists",
 	data() {
-		return {
-			articles,
-		};
+		return {};
+	},
+	props: {
+		articles: Array,
 	},
 };
 </script>
