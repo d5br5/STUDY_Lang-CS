@@ -8,7 +8,8 @@
 		</ul>
 		<img src="./assets/logo.png" class="logo" />
 	</div>
-
+	<h4>안녕 {{ $store.state.name }}</h4>
+	<button @click="$store.state.name = 'park'">버튼</button>
 	<Container
 		:instaData="instaData"
 		:step="step"
@@ -42,7 +43,21 @@ export default {
 	name: "App",
 	components: { Container },
 	data() {
-		return { instaData, loadnum: 0, step: 0, newImage: "", description: "" };
+		return {
+			instaData,
+			loadnum: 0,
+			step: 0,
+			newImage: "",
+			description: "",
+			newFilter: "",
+		};
+	},
+
+	mounted() {
+		this.emitter.on("fire", (filter) => {
+			console.log(filter);
+			this.newFilter = filter;
+		});
 	},
 	methods: {
 		async loadMore() {
@@ -73,7 +88,7 @@ export default {
 					date: Date.now(),
 					liked: false,
 					content: this.description,
-					filter: "perpetua",
+					filter: this.newFilter,
 				};
 				this.instaData.unshift(newPost);
 				this.step = 0;
@@ -86,11 +101,15 @@ export default {
 		setDesc(desc) {
 			this.description = desc;
 		},
+		onFilterChange(filter) {
+			this.newFilter = filter;
+		},
 	},
 };
 </script>
 
 <style>
+@import "./assets/cssgram.css";
 body {
 	margin: 0;
 }

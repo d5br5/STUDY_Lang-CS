@@ -3,18 +3,21 @@
 	<div>
 		<Post v-for="(v, i) in instaData" :key="i" :post="v" v-show="step === 0" />
 
-		<!-- 필터선택페이지 -->
+		<!-- 업로드된 이미지 -->
 		<div
-			class="upload-image"
+			:class="`upload-image ${nowClass}`"
 			v-show="step === 2 || step === 1"
 			:style="{ backgroundImage: `url(${newImage})` }"
 		/>
+		<!-- 필터선택페이지 -->
 		<div class="filters" v-show="step === 1">
-			<div class="filter-1"></div>
-			<div class="filter-1"></div>
-			<div class="filter-1"></div>
-			<div class="filter-1"></div>
-			<div class="filter-1"></div>
+			<FilterBox
+				:newImg="newImage"
+				v-for="(f, i) in filterList"
+				:key="i"
+				:filterName="f"
+			/>
+			<!-- <template v-slot:a> 데이터 1 </template> -->
 		</div>
 
 		<!-- 글작성페이지 -->
@@ -30,12 +33,17 @@
 
 <script>
 import Post from "./Post.vue";
+import FilterBox from "./FilterBox.vue";
+import filterList from "../assets/filterList";
+
 export default {
 	name: "postbox",
-	components: { Post },
+	components: { Post, FilterBox },
 	data() {
 		return {
 			description: "",
+			filterList,
+			nowClass: "",
 		};
 	},
 	props: {
@@ -47,6 +55,15 @@ export default {
 		onChangeDesc(e) {
 			this.$emit("onDescChange", e.target.value);
 		},
+		onFilterChange(filter) {
+			this.nowClass = filter;
+			this.$emit("filterChange", filter);
+		},
+	},
+	mounted() {
+		this.emitter.on("fire", (filter) => {
+			this.nowClass = filter;
+		});
 	},
 };
 </script>
