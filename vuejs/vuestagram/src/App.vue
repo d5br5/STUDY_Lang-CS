@@ -1,24 +1,26 @@
 <template>
 	<div class="header">
-		<ul class="header-button-left" v-if="step !== 0" @click="stepBack">
+		<ul
+			class="header-button-left"
+			v-if="$store.state.step !== 0"
+			@click="$store.commit('goBack')"
+		>
 			<li>Cancel</li>
 		</ul>
-		<ul class="header-button-right" v-if="step !== 0" @click="stepNext">
-			<li>{{ step === 1 ? "next" : "done" }}</li>
+		<ul
+			class="header-button-right"
+			v-if="$store.state.step !== 0"
+			@click="$store.commit('goNext')"
+		>
+			<li>{{ $store.state.step === 1 ? "next" : "done" }}</li>
 		</ul>
 		<img src="./assets/logo.png" class="logo" />
 	</div>
-	<h4>안녕 {{ $store.state.name }}</h4>
-	<button @click="$store.state.name = 'park'">버튼</button>
-	<Container
-		:instaData="instaData"
-		:step="step"
-		:newImage="newImage"
-		@onDescChange="setDesc"
-	/>
+	<Container @onDescChange="setDesc" />
 
-	<button @click="loadMore" v-if="step === 0">더보기</button>
-	<div class="footer" v-if="step === 0">
+	<button @click="loadMore" v-if="$store.state.step === 0">더보기</button>
+
+	<div class="footer" v-if="$store.state.step === 0">
 		<ul class="footer-button-plus">
 			<input
 				@change="uploadFile"
@@ -35,74 +37,28 @@
 
 <script>
 import Container from "./components/Container.vue";
-import instaData from "./assets/data";
 import axios from "axios";
 const loadURL = (id) => `https://codingapple1.github.io/vue/more${id}.json`;
 
 export default {
 	name: "App",
 	components: { Container },
-	data() {
-		return {
-			instaData,
-			loadnum: 0,
-			step: 0,
-			newImage: "",
-			description: "",
-			newFilter: "",
-		};
-	},
-
-	mounted() {
-		this.emitter.on("fire", (filter) => {
-			console.log(filter);
-			this.newFilter = filter;
-		});
-	},
 	methods: {
 		async loadMore() {
-			const { data } = await axios.get(loadURL(this.loadnum));
-			if (this.loadnum === 1) {
-				this.loadnum = 0;
-			} else {
-				this.loadnum = 1;
-			}
-			this.instaData.push(data);
+			const { data } = await axios.get(loadURL(this.$store.state.loadnum));
+			this.$store.commit("loadNumChange");
+			this.$store.commit("instaDataPush", data);
 		},
 		uploadFile(e) {
 			let file = e.target.files;
-			this.newImage = URL.createObjectURL(file[0]);
+			this.$store.commit("uploadFile", file[0]);
 			this.$refs.imageUploader.value = "";
-			this.step = 1;
-		},
-		stepBack() {
-			if (this.step === 1 || this.step === 2) this.step--;
-		},
-		stepNext() {
-			if (this.step === 2) {
-				const newPost = {
-					name: "dohyung Kim",
-					userImage: this.newImage,
-					postImage: this.newImage,
-					likes: 0,
-					date: Date.now(),
-					liked: false,
-					content: this.description,
-					filter: this.newFilter,
-				};
-				this.instaData.unshift(newPost);
-				this.step = 0;
-				this.description = "";
-				this.newImage = "";
-				return;
-			}
-			if (this.step === 0 || this.step === 1) this.step++;
 		},
 		setDesc(desc) {
-			this.description = desc;
+			this.$store.commit("changeDesc", desc);
 		},
 		onFilterChange(filter) {
-			this.newFilter = filter;
+			this.$store.commit("changeFilter", filter);
 		},
 	},
 };

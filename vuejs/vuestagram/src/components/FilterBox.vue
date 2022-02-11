@@ -1,11 +1,10 @@
 <template>
 	<div
 		:class="`filter-item ${filterName}`"
-		:style="{ backgroundImage: `url(${newImg})` }"
-		@click="fire"
+		:style="{ backgroundImage: `url(${$store.state.newImage})` }"
+		@click="onFilterChange(filterName)"
 	>
 		{{ filterName }}
-		<!-- <slot name="a"></slot> -->
 	</div>
 </template>
 
@@ -13,12 +12,11 @@
 export default {
 	name: "filterbox",
 	props: {
-		newImg: String,
 		filterName: String,
 	},
 	methods: {
-		fire() {
-			this.emitter.emit("fire", this.filterName);
+		onFilterChange(filter) {
+			this.$store.commit("changeFilter", filter);
 		},
 	},
 };
