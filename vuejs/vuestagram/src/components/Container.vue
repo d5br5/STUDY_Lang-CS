@@ -6,6 +6,7 @@
 			:key="i"
 			:post="v"
 			v-show="$store.state.step === 0"
+			@click="likeToggle(i)"
 		/>
 		<!-- 업로드된 이미지 -->
 		<div
@@ -45,6 +46,9 @@ export default {
 			// this.$emit("onDescChange", e.target.value);
 			this.$store.commit("changeDesc", e.target.value);
 		},
+		likeToggle(index) {
+			this.$store.commit("likeToggle", index);
+		},
 	},
 	// mounted() {
 	// 	this.emitter.on("fire", (filter) => {
@@ -55,6 +59,10 @@ export default {
 </script>
 
 <style>
+ul {
+	padding: 5px;
+	list-style-type: none;
+}
 .upload-image {
 	width: 100%;
 	height: 450px;

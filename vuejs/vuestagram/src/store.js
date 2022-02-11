@@ -69,6 +69,15 @@ const store = createStore({
 			state.newImage = URL.createObjectURL(payload);
 			state.step = 1;
 		},
+		likeToggle(state, payload) {
+			const data = state.instaData[payload];
+			if (data.liked) {
+				data.likes--;
+			} else {
+				data.likes++;
+			}
+			data.liked = !data.liked;
+		},
 	},
 });
 
