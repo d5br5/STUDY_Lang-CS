@@ -1,4 +1,6 @@
 import { createStore } from "vuex";
+import axios from "axios";
+
 import instaData from "./assets/data";
 import filterList from "./assets/filterList";
 
@@ -77,6 +79,16 @@ const store = createStore({
 				data.likes++;
 			}
 			data.liked = !data.liked;
+		},
+	},
+	//ajax
+	actions: {
+		async loadMore(context) {
+			const loadURL = (id) =>
+				`https://codingapple1.github.io/vue/more${id}.json`;
+			const { data } = await axios.get(loadURL(context.state.loadnum));
+			context.commit("loadNumChange");
+			context.commit("instaDataPush", data);
 		},
 	},
 });
