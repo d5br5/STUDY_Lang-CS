@@ -12,7 +12,7 @@ const store = createStore({
 			instaData,
 			filterList,
 			loadnum: 0,
-			step: 0,
+			step: 3,
 			newImage: "",
 			description: "",
 			newFilter: "",

@@ -28,17 +28,22 @@
 				@input="onChangeDesc($event)"
 			/>
 		</div>
+
+		<div v-if="step === 3">
+			<MyPage :one="1" />
+		</div>
 	</div>
 </template>
 
 <script>
 import Post from "./Post.vue";
 import FilterBox from "./FilterBox.vue";
+import MyPage from "./MyPage.vue";
 import { mapState, mapMutations } from "vuex";
 
 export default {
 	name: "postbox",
-	components: { Post, FilterBox },
+	components: { Post, FilterBox, MyPage },
 	data() {
 		return {
 			counter: 0,
