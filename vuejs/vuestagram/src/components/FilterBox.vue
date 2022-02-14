@@ -2,19 +2,21 @@
 	<div
 		:class="`filter-item ${filterName}`"
 		:style="{ backgroundImage: `url(${$store.state.newImage})` }"
-		@click="onFilterChange(filterName)"
+		@click="changeFilter(filterName)"
 	>
 		{{ filterName }}
 	</div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
 	name: "filterbox",
 	props: {
 		filterName: String,
 	},
 	methods: {
+		...mapMutations(["changeFilter"]),
 		onFilterChange(filter) {
 			this.$store.commit("changeFilter", filter);
 		},

@@ -1,33 +1,30 @@
 <template>
 	<!-- 저번시간에 만든거 -->
 	<div>
+		{{ name }}
 		<Post
-			v-for="(v, i) in $store.state.instaData"
+			v-for="(v, i) in instaData"
 			:key="i"
 			:post="v"
-			v-show="$store.state.step === 0"
+			v-show="step === 0"
 			@click="likeToggle(i)"
 		/>
 		<!-- 업로드된 이미지 -->
 		<div
-			:class="`upload-image ${$store.state.newFilter}`"
-			v-show="$store.state.step === 2 || $store.state.step === 1"
-			:style="{ backgroundImage: `url(${$store.state.newImage})` }"
+			:class="`upload-image ${newFilter}`"
+			v-show="step === 2 || step === 1"
+			:style="{ backgroundImage: `url(${newImage})` }"
 		/>
 		<!-- 필터선택페이지 -->
-		<div class="filters" v-show="$store.state.step === 1">
-			<FilterBox
-				v-for="(f, i) in $store.state.filterList"
-				:filterName="f"
-				:key="i"
-			/>
+		<div class="filters" v-show="step === 1">
+			<FilterBox v-for="(f, i) in filterList" :filterName="f" :key="i" />
 		</div>
 		<!-- 글작성페이지 -->
-		<div class="write" v-show="$store.state.step === 2">
+		<div class="write" v-show="step === 2">
 			<input
 				class="write-box"
 				placeholder="Write!"
-				:value="$store.state.description"
+				:value="description"
 				@input="onChangeDesc($event)"
 			/>
 		</div>
@@ -37,10 +34,16 @@
 <script>
 import Post from "./Post.vue";
 import FilterBox from "./FilterBox.vue";
+import { mapState, mapMutations } from "vuex";
 
 export default {
 	name: "postbox",
 	components: { Post, FilterBox },
+	data() {
+		return {
+			counter: 0,
+		};
+	},
 	methods: {
 		onChangeDesc(e) {
 			// this.$emit("onDescChange", e.target.value);
@@ -49,6 +52,22 @@ export default {
 		likeToggle(index) {
 			this.$store.commit("likeToggle", index);
 		},
+		...mapMutations(["likeToggle"]),
+		...mapMutations({ myNameMutation: "likeToggle" }),
+	},
+	computed: {
+		name2() {
+			return this.$store.state.name;
+		},
+		...mapState([
+			"step",
+			"description",
+			"newImage",
+			"filterList",
+			"instaData",
+			"newFilter",
+		]),
+		...mapState({ myname: "name" }),
 	},
 	// mounted() {
 	// 	this.emitter.on("fire", (filter) => {

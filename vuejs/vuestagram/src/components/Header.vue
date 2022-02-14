@@ -1,26 +1,25 @@
 <template>
 	<div class="header">
-		<ul
-			class="header-button-left"
-			v-if="$store.state.step !== 0"
-			@click="$store.commit('goBack')"
-		>
+		<ul class="header-button-left" v-if="step !== 0" @click="goBack">
 			<li>Cancel</li>
 		</ul>
-		<ul
-			class="header-button-right"
-			v-if="$store.state.step !== 0"
-			@click="$store.commit('goNext')"
-		>
-			<li>{{ $store.state.step === 1 ? "next" : "done" }}</li>
+		<ul class="header-button-right" v-if="step !== 0" @click="goNext">
+			<li>{{ step === 1 ? "next" : "done" }}</li>
 		</ul>
 		<img src="../assets/logo.png" class="logo" />
 	</div>
 </template>
 
 <script>
+import { mapMutations, mapState } from "vuex";
 export default {
 	name: "InstaHeader",
+	methods: {
+		...mapMutations(["goBack", "goNext"]),
+	},
+	computed: {
+		...mapState(["step"]),
+	},
 };
 </script>
 
