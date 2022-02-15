@@ -71,6 +71,7 @@ export default {
 			"filterList",
 			"instaData",
 			"newFilter",
+			"name"
 		]),
 		...mapState({ myname: "name" }),
 	},
