@@ -43,14 +43,3 @@ let school: {
 school.score[4] = false;
 school.friend = ["Lee", school.teacher];
 
-function myfunction(x?: number | string): void {}
-myfunction(2);
-myfunction("string");
-
-function hello(name?: string): void {
-	if (name === undefined) {
-		console.log("hi");
-	} else {
-		console.log("noname");
-	}
-}

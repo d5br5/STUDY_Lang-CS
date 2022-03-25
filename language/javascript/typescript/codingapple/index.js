@@ -27,6 +27,3 @@ var school = {
 };
 school.score[4] = false;
 school.friend = ["Lee", school.teacher];
-function myfunction(x) { }
-myfunction(2);
-myfunction("string");
