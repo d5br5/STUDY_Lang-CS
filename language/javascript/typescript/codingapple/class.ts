@@ -38,3 +38,37 @@ class Word{
     }
   }
 }
+
+interface Square{
+  color: string,
+  width :number
+}
+let nemo = { color: "red", width: 100 }
+
+interface Student{ name: string }
+interface Student{ address?: string}
+interface Teacher extends Student{
+  age:number
+}
+let student: Student = { name: "kim" }
+let teacher: Teacher = {
+  name: "part",
+  age: 33
+}
+
+interface Merchandise {
+  brand: string,
+  serialNumber: number,
+  model: string[]
+}
+
+interface Product{
+  product: string,
+  price: number
+}
+
+interface OBJ{
+  plus: (a: number, b: number) => number,
+  minus: (a:number, b:number) => number
+}
+
