@@ -1,5 +1,11 @@
+// local module
+export {};
+declare global {
+	type Dog = string;
+}
+
 let names: string = "kim";
-let age: number = 50;
+let age: Age = 50;
 let marry: boolean = true;
 let undefin: undefined = undefined;
 let nul = null;
@@ -42,4 +48,3 @@ let school: {
 };
 school.score[4] = false;
 school.friend = ["Lee", school.teacher];
-
