@@ -3,5 +3,6 @@ import * as ReactDOM from "react-dom";
 
 import GuGuDan from "./lec/GuGuDan";
 import WordRelay from "./lec/WordRelay";
+import NumberBaseball from "./lec/NumberBaseball";
 
-ReactDOM.render(<WordRelay />, document.querySelector("#root"));
+ReactDOM.render(<NumberBaseball />, document.querySelector("#root"));
