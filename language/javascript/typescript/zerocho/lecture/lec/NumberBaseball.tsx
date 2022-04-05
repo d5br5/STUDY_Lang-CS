@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
-import Try from "./Try";
+import Try from "./components/Try";
 import { TryInfo } from "./types";
 
 const getNumbers = (): number[] => {
