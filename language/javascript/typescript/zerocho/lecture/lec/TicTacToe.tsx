@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useReducer, Reducer } from "react";
+import React, { useEffect, useCallback, useReducer } from "react";
 import Table from "./components/Table";
 
 type Winner = "O" | "X";
@@ -41,7 +41,7 @@ interface ClickCellAction {
 	cell: number;
 }
 
-const clickCell = (row: number, cell: number): ClickCellAction => {
+export const clickCell = (row: number, cell: number): ClickCellAction => {
 	return { type: CLICK_CELL, row, cell };
 };
 
@@ -90,8 +90,68 @@ const reducer = (state: ReducerState, action: ReducerActions): ReducerState => {
 };
 
 const TicTacToe = () => {
-	const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = useReducer<
+		React.Reducer<ReducerState, ReducerActions>
+	>(reducer, initialState);
 	const { tableData, turn, winner, recentCell } = initialState;
+
+	useEffect(() => {
+		const [row, cell] = recentCell;
+		if (row < 0) {
+			return;
+		}
+		let win = false;
+		if (
+			tableData[row][0] === turn &&
+			tableData[row][1] === turn &&
+			tableData[row][2] === turn
+		) {
+			win = true;
+		}
+		if (
+			tableData[0][cell] === turn &&
+			tableData[1][cell] === turn &&
+			tableData[2][cell] === turn
+		) {
+			win = true;
+		}
+		if (
+			tableData[0][0] === turn &&
+			tableData[1][1] === turn &&
+			tableData[2][2] === turn
+		) {
+			win = true;
+		}
+		if (
+			tableData[0][2] === turn &&
+			tableData[1][1] === turn &&
+			tableData[2][0] === turn
+		) {
+			win = true;
+		}
+		console.log(win, row, cell, tableData, turn);
+		if (win) {
+			// 승리시
+			dispatch({ type: SET_WINNER, winner: turn });
+			dispatch({ type: RESET_GAME });
+		} else {
+			// all이 true면 무승부라는 뜻
+			let all = true;
+			tableData.forEach((row) => {
+				// 무승부 검사
+				row.forEach((cell) => {
+					if (!cell) {
+						all = false;
+					}
+				});
+			});
+			if (all) {
+				dispatch({ type: RESET_GAME });
+			} else {
+				dispatch({ type: CHANGE_TURN });
+			}
+		}
+	}, [recentCell]);
 
 	const onClickTable = useCallback(() => {
 		dispatch(setWinner("O"));
