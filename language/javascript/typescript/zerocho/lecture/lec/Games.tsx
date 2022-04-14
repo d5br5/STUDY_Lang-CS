@@ -1,5 +1,6 @@
 import React from "react";
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom"
+import GameMatcher from "./GameMatcher";
 
 const Games = () => {
   return (
