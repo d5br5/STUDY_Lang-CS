@@ -1,7 +1,7 @@
-import MyComponent from "./MyComponent";
+import EventPractice from "./EventPractice";
 
 function App() {
-	return <MyComponent>children is this</MyComponent>;
+	return <EventPractice />;
 }
 
 export default App;
