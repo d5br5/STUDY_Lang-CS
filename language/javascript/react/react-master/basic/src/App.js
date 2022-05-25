@@ -1,10 +1,6 @@
-import Average from "./08Hooks/Average";
+import Immer from "./12Immer/Immer";
 
 const App = () => {
-	return (
-		<div>
-			<Average />
-		</div>
-	);
+	return <Immer />;
 };
 export default App;
