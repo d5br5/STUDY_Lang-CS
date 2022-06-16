@@ -1,115 +1,154 @@
-let postId = 1;
+import Post from "../../models/post";
+import mongoose from "mongoose";
+import Joi from "@hapi/joi";
 
-const posts = [
-  {
-    id: 1,
-    title: "제목",
-    body: "내용",
-  },
-];
+const { ObjectId } = mongoose.Types;
 
-/**
- * 포스트 작성
- * POST /api/posts
- * {title, body}
- */
-
-exports.write = (ctx) => {
-  const { title, body } = ctx.request.body;
-  postId += 1;
-  const post = { id: postId, title, body };
-  posts.push(post);
-  ctx.body = post;
+export const checkObjectId = (ctx, next) => {
+  const { id } = ctx.params;
+  if (!ObjectId.isValid(id)) {
+    ctx.status = 400;
+    return;
+  }
+  return next();
 };
 
 /**
- * 포스트 조회
+ * POST /api/posts
+ * {
+ *  title: "제목",
+ *  body : "내용",
+ *  tags : ["tag1", "tag2"]
+ * }
+ *
+ */
+
+export const write = async (ctx) => {
+  const schema = Joi.object().keys({
+    title: Joi.string().required(),
+    body: Joi.string().required(),
+    tags: Joi.array().items(Joi.string()).required(),
+  });
+
+  const result = schema.validate(ctx.request.body);
+  if (result.error) {
+    ctx.status = 400;
+    ctx.body = result.error;
+    return;
+  }
+
+  const { title, body, tags } = ctx.request.body;
+  const post = new Post({
+    title,
+    body,
+    tags,
+  });
+  try {
+    // DB 연동 저장
+    await post.save();
+    ctx.body = post;
+  } catch (e) {
+    ctx.throw(500, e);
+  }
+};
+
+/**
  * GET /api/posts
  */
 
-exports.list = (ctx) => {
-  ctx.body = posts;
+export const list = async (ctx) => {
+  const page = parseInt(ctx.query.page || "1", 10);
+  if (page < 1) {
+    ctx.status = 400;
+    return;
+  }
+  try {
+    const posts = await Post.find()
+      .sort({ _id: -1 })
+      .limit(10)
+      .skip((page - 1) * 10)
+      .lean() //
+      .exec();
+    const postCount = await Post.countDocuments().exec();
+    ctx.set("Last-Page", Math.ceil(postCount / 10));
+    ctx.body = posts
+      // .map((post) => post.toJSON())
+      .map((post) => ({
+        ...post,
+        body:
+          post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}...`,
+      }));
+  } catch (e) {
+    ctx.throw(500, e);
+  }
 };
 
 /**
- * 특정 포스트 조회
  * GET /api/posts/:id
  */
 
-exports.read = (ctx) => {
+export const read = async (ctx) => {
   const { id } = ctx.params;
-  const post = posts.find((p) => p.id.toString() === id);
-  if (!post) {
-    ctx.status = 404;
-    ctx.body = {
-      message: "Post not exist",
-    };
-    return;
+  try {
+    const post = await Post.findById(id).exec();
+    if (!post) {
+      ctx.status = 404;
+      return;
+    }
+    ctx.body = post;
+  } catch (e) {
+    ctx.throw(500, e);
   }
-  ctx.body = post;
 };
 
 /**
- * 특정 포스트 삭제
  * DELETE /api/posts/:id
  */
 
-exports.remove = (ctx) => {
+export const remove = async (ctx) => {
   const { id } = ctx.params;
-  const index = posts.findIndex((p) => p.id.toString() === id);
-  if (index === -1) {
-    ctx.status = 404;
-    ctx.body = {
-      message: "Post not exist",
-    };
-    return;
+  try {
+    await Post.findByIdAndRemove(id).exec();
+    ctx.status = 204;
+  } catch (e) {
+    ctx.throw(500, e);
   }
-  posts.splice(index, 1);
-  ctx.status = 204; // No Content
 };
 
 /**
- * 포스트 교체
- * PUT /api/posts/:id
- * {title, body}
- */
-
-exports.replace = (ctx) => {
-  const { id } = ctx.params;
-  const index = posts.findIndex((p) => p.id.toString() === id);
-  if (index === -1) {
-    ctx.status = 404;
-    ctx.body = {
-      message: "Post not exist",
-    };
-    return;
-  }
-  posts[index] = {
-    id,
-    ...ctx.request.body,
-  };
-  ctx.body = posts[index];
-};
-
-/**
- * 포스트 수정
  * PATCH /api/posts/:id
- * {title, body}
+ * {
+ *  title : "수정",
+ *  body : "수정 내용"
+ *  tags : ["수정", "태그"]
+ * }
  */
 
-exports.update = (ctx) => {
+export const update = async (ctx) => {
   const { id } = ctx.params;
-  const index = posts.findIndex((p) => p.id.toString() === id);
-  if (index === -1) {
-    ctx.status = 404;
-    ctx.body = {
-      message: "Post not exist",
-    };
+  const schema = Joi.object().keys({
+    title: Joi.string(),
+    body: Joi.string(),
+    tags: Joi.array().items(Joi.string()),
+  });
+
+  const result = schema.validate(ctx.request.body);
+  if (result.error) {
+    ctx.status = 400;
+    ctx.body = result.error;
     return;
   }
-  posts[index] = {
-    ...posts[index],
-    ...ctx.request.body,
-  };
-  ctx.body = posts[index];
+
+  try {
+    const post = await Post.findByIdAndUpdate(id, ctx.request.body, {
+      new: true,
+    }).exec();
+    if (!post) {
+      ctx.status = 404;
+      return;
+    }
+    ctx.body = post;
+  } catch (e) {
+    ctx.throw(500, e);
+  }
 };
