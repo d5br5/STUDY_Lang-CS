@@ -1,6 +1,6 @@
 import Editor from "../../components/write/Editor";
 import { useSelector, useDispatch } from "react-redux";
-import { changeField, initialize } from "../../modules/write";
+import { changeField } from "../../modules/write";
 import { useCallback, useEffect } from "react";
 
 const EditorContainer = () => {
@@ -12,7 +12,7 @@ const EditorContainer = () => {
   );
   useEffect(() => {
     return () => {
-      dispatch(initialize());
+      // dispatch(initialize());
     };
   }, [dispatch]);
   return <Editor onChangeField={onChangeField} title={title} body={body} />;
