@@ -1,36 +1,29 @@
-import { useEffect, useState } from "react";
-
-const Home = () => <h2>여기는 홈페이지입니다.</h2>;
-const Page1 = () => <h2>page1</h2>;
-const Page2 = () => <h2>page2</h2>;
+import React, { useState, useRef, useEffect } from "react";
 
 function App() {
-	const [pageName, setPageName] = useState("");
+	const [age, setAge] = useState(20);
+	const prevAgeRef = useRef(20);
+
 	useEffect(() => {
-		window.onpopstate = function (e) {
-			setPageName(e.state);
-		};
-	}, []);
+		prevAgeRef.current = age;
+		console.log("@1");
+	}, [age]);
 
-	function onClick1() {
-		const pageName = "page1";
-		window.history.pushState(pageName, "", "/page1");
-		setPageName(pageName);
-	}
-
-	function onClick2() {
-		const pageName = "page2";
-		window.history.pushState(pageName, "", "/page2");
-		setPageName(pageName);
-	}
+	const prevAge = prevAgeRef.current;
+	console.log("@2");
 
 	return (
 		<div>
-			<button onClick={onClick1}>page1</button>
-			<button onClick={onClick2}>page2</button>
-			{!pageName && <Home />}
-			{pageName === "page1" && <Page1 />}
-			{pageName === "page2" && <Page2 />}
+			<p>age : {age}</p>
+			<p>prev : {prevAge}</p>
+			<button
+				onClick={() => {
+					const age = Math.floor(Math.random() * 50 + 1);
+					setAge(age);
+				}}
+			>
+				나이 변경
+			</button>
 		</div>
 	);
 }
