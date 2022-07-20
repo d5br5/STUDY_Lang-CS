@@ -1,33 +1,39 @@
-import store from "../../common/store";
-import { useEffect, useReducer } from "react";
-import { addTimeline } from "../state";
+import { actions } from "../state";
 import TimelineList from "../component/TimelineList";
 import { getNextTimeline } from "../../common/mockData";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
 export default function TimelineMain() {
-	const [, forceUpdate] = useReducer((v) => v + 1, 0);
-	useEffect(() => {
-		let prevFriends = store.getState().timeline.timelines;
-		const unsubscribe = store.subscribe(() => {
-			const friends = store.getState().timeline.timelines;
-			if (prevFriends !== friends) {
-				forceUpdate();
-			}
-			prevFriends = friends;
-		});
-
-		return () => unsubscribe();
-	}, []);
+	const dispatch = useDispatch();
+	const timelines = useSelector((state) => state.timeline.timelines);
+	const isLoading = useSelector((state) => state.timeline.isLoading);
+	const error = useSelector((state) => state.timeline.error);
+	const text = useSelector((state) => state.timeline.text);
+	const [currentText, setCurrentText] = useState("");
+	function onChangeText(e) {
+		const text = e.target.value;
+		dispatch(actions.trySetText(text));
+		setCurrentText(text);
+	}
 	function onAdd() {
 		const timeline = getNextTimeline();
-		store.dispatch(addTimeline(timeline));
+		dispatch(actions.addTimeline(timeline));
 	}
-	console.log("TimelineMain render");
-	const timelines = store.getState().timeline.timelines;
+	function onLike(e) {
+		const id = Number(e.target.dataset.id);
+		const timeline = timelines.find((item) => item.id === id);
+		dispatch(actions.requestLike(timeline));
+	}
+
 	return (
 		<div>
 			<button onClick={onAdd}>add timeline</button>
-			<TimelineList timelines={timelines} />
+			<TimelineList timelines={timelines} onLike={onLike} />
+			{!!isLoading && <p>전송 중...</p>}
+			{!!error && <p>에러 발생 : {error}</p>}
+			<input type={"text"} value={currentText} onChange={onChangeText} />
+			{!!text && <p>{text}</p>}
 		</div>
 	);
 }
