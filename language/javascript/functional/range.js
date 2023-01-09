@@ -61,3 +61,22 @@ const take = curry((l, iter) => {
 go(L.range(10000), take(5), reduce(add), log);
 
 log(take(5, L.range(100)));
+
+L.map = function* (f, iter) {
+	for (const a of iter) yield f(a);
+};
+
+var it = L.map((a) => a + 10, [1, 2, 3]);
+// log(it.next());
+// log(it.next());
+// log(it.next());
+// log(it.next());
+
+L.filter = function* (f, iter) {
+	for (const a of iter) {
+		if (f(a)) yield a;
+	}
+};
+
+var it = L.filter((a) => a > 4, range(10));
+log([...it]);
