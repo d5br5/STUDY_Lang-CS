@@ -53,12 +53,6 @@ const sum = curry((f, iter) => go(iter, map(f), reduce(add)));
 
 const total_quantity = sum((p) => p.quantity);
 
-const totalQuantity = pipe(
-	map((p) => p.quantity),
-	reduce(add)
-);
-
-log(totalQuantity(products));
 log(total_quantity(products));
 
 const totalPrice = pipe(
