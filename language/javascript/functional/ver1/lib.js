@@ -1,5 +1,3 @@
-const { log } = console;
-
 const curry =
 	(f) =>
 	(a, ..._) =>
@@ -41,13 +39,24 @@ const pipes =
 	(...as) =>
 		go(f(...as), ...fs);
 
+const range = (l) => {
+	return Array.from({ length: l }, (_, i) => i);
+};
+
 const take = curry((l, iter) => {
 	let res = [];
-	for (const a of iter) {
-		res.push(a);
-		if (res.length === l) return res;
-	}
-	return res;
+	iter = iter[Symbol.iterator]();
+	return (function recur() {
+		let cur;
+		while (!(cur = iter.next()).done) {
+			const a = cur.value;
+			if (a instanceof Promise)
+				return a.then((a) => ((res.push(a), res).length == l ? res : recur()));
+			res.push(a);
+			if (res.length == l) return res;
+		}
+		return res;
+	})();
 });
 
 const takeAll = take(Infinity);
@@ -57,31 +66,4 @@ const filter = curry(pipes(L.filter, takeAll));
 
 const join = curry((sep = ",", iter) => reduce((a, b) => `${a}${sep}${b}`, iter));
 
-const queryStr = pipe(
-	Object.entries,
-	map(([k, v]) => `${k}=${v}`),
-	join("&")
-);
-
-const query = {
-	limit: 10,
-	offset: 10,
-	type: "notice",
-};
-
-log(queryStr(query));
-
-const users = [
-	{ age: 32 },
-	{ age: 31 },
-	{ age: 37 },
-	{ age: 28 },
-	{ age: 25 },
-	{ age: 32 },
-	{ age: 34 },
-	{ age: 37 },
-];
-
 const find = pipes(L.filter, take(1), ([a]) => a);
-
-log(find((u) => u.age < 32, users));
