@@ -1,4 +1,4 @@
-import { log, filter, map, reduce } from "./fx.js";
+import { log, filter, map, reduce, go, pipe } from "./fx.js";
 
 const products = [
   { name: "반팔티", price: 15000 },
@@ -9,6 +9,20 @@ const products = [
 ];
 
 const add = (a, b) => a + b;
+
+const total_price = pipe(
+  map((p) => p.price),
+  reduce(add)
+);
+
+const base_total_price = (predi) => pipe(filter(predi), total_price);
+
+go(
+  products,
+  filter((p) => p.price < 20000),
+  total_price,
+  log
+);
 
 log(
   reduce(
