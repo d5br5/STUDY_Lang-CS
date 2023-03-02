@@ -166,18 +166,23 @@ L.flatMap = curry(pipe(L.map, L.flatten));
 export const flatMap = curry(pipe(L.map, flatten));
 
 function noop() {}
-const catchNoop = (arr) => (
+const catchNoop = ([...arr]) => (
   arr.forEach((a) => (a instanceof Promise ? a.catch(noop) : a)), arr
 );
 
 export const C = {};
 
-C.reduce = curry((f, acc, iter) => {
-  let iter2 = catchNoop(iter ? [...iter] : [...acc]);
-  // catch가 된 promise를 전달하면 이후에 다시 catch를 하여 처리할 수 없음
-  // catch가 되지 않은 p 를 전달하되, 한번 catch를 해주는것
-  // iter2 = iter2.map(a=>a.catch(function(){}))
-  return iter ? reduce(f, acc, iter2) : reduce(f, iter2);
-});
+// catch가 된 promise를 전달하면 이후에 다시 catch를 하여 처리할 수 없음
+// catch가 되지 않은 p 를 전달하되, 한번 catch를 해주는것
+// iter2 = iter2.map(a=>a.catch(function(){}))
+C.reduce = curry((f, acc, iter) =>
+  iter ? reduce(f, acc, catchNoop(iter)) : reduce(f, catchNoop(acc))
+);
 
-C.take = curry((l, iter) => take(l, catchNoop([...iter])));
+C.take = curry((l, iter) => take(l, catchNoop(iter)));
+
+C.takeAll = C.take(Infinity);
+
+C.map = curry(pipe(L.map, C.takeAll));
+
+C.filter = curry(pipe(L.filter, C.takeAll));
