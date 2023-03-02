@@ -1,5 +1,7 @@
 export const log = console.log;
 
+const isIterable = (a) => a && a[Symbol.iterator];
+
 export const curry =
   (f) =>
   (a, ..._) =>
@@ -27,33 +29,54 @@ export const filter = curry((f, iter) => {
   return res;
 });
 
-export const reduce = curry((f, acc, iter) => {
-  if (!iter) {
-    iter = acc[Symbol.iterator]();
-    acc = iter.next().value;
-  } else {
-    iter = iter[Symbol.iterator]();
-  }
-  let cur;
+const go1 = (a, f) => (a instanceof Promise ? a.then(f) : f(a));
 
-  while (!(cur = iter.next()).done) {
-    const a = cur.value;
-    acc = f(acc, a);
-  }
-  return acc;
+const nop = Symbol("nop");
+
+const reduceF = (acc, a, f) =>
+  a instanceof Promise
+    ? a.then(
+        (a) => f(acc, a),
+        (e) => (e === nop ? acc : Promise.reject(e))
+      )
+    : f(acc, a);
+
+const head = (iter) => go1(take(1, iter), ([h]) => h);
+
+export const reduce = curry((f, acc, iter) => {
+  if (!iter) return reduce(f, head((iter = acc[Symbol.iterator]())), iter);
+
+  iter = iter[Symbol.iterator]();
+  return go1(acc, function recur(acc) {
+    let cur;
+    while (!(cur = iter.next()).done) {
+      acc = reduceF(acc, cur.value, f);
+      // acc = acc instanceof Promise ? acc.then((acc) => f(acc, a)) : f(acc, a);
+      if (acc instanceof Promise) {
+        console.log("promise");
+        return acc.then(recur);
+      }
+    }
+    return acc;
+  });
 });
 
 export const take = curry((l, iter) => {
   let res = [];
   iter = iter[Symbol.iterator]();
-  let cur;
-  while (!(cur = iter.next()).done) {
-    const a = cur.value;
-    res.push(a);
-    if (res.length === l) return res;
-  }
-
-  return res;
+  return (function recur() {
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      if (a instanceof Promise)
+        return a
+          .then((a) => ((res.push(a), res).length === l ? res : recur()))
+          .catch((e) => (e === nop ? recur() : Promise.reject(e)));
+      res.push(a);
+      if (res.length === l) return res;
+    }
+    return res;
+  })();
 });
 
 export const find = curry((f, iter) =>
@@ -92,7 +115,7 @@ L.map = curry(function* (f, iter) {
   let cur;
   while (!(cur = iter.next()).done) {
     const a = cur.value;
-    yield f(a);
+    yield go1(a, f);
   }
 });
 
@@ -102,15 +125,16 @@ L.filter = curry(function* (f, iter) {
   let cur;
   while (!(cur = iter.next()).done) {
     const a = cur.value;
-    if (f(a)) yield a;
+    const b = go1(a, f);
+    if (b instanceof Promise)
+      yield b.then((b) => (b ? a : Promise.reject(nop)));
+    else if (b) yield a;
   }
 });
 
 L.entries = function* (obj) {
   for (const k in obj) yield [k, obj[k]];
 };
-
-const isIterable = (a) => a && a[Symbol.iterator];
 
 L.flatten = function* (iter) {
   for (const a of iter) {
@@ -138,5 +162,22 @@ export const flatten = pipe(L.flatten, takeAll);
 
 L.flatMap = curry(pipe(L.map, L.flatten));
 
-// const flatMap = curry(pipe(L.flatMap, takeAll));
-const flatMap = curry(pipe(L.map, flatten));
+// export const flatMap = curry(pipe(L.flatMap, takeAll));
+export const flatMap = curry(pipe(L.map, flatten));
+
+function noop() {}
+const catchNoop = (arr) => (
+  arr.forEach((a) => (a instanceof Promise ? a.catch(noop) : a)), arr
+);
+
+export const C = {};
+
+C.reduce = curry((f, acc, iter) => {
+  let iter2 = catchNoop(iter ? [...iter] : [...acc]);
+  // catch가 된 promise를 전달하면 이후에 다시 catch를 하여 처리할 수 없음
+  // catch가 되지 않은 p 를 전달하되, 한번 catch를 해주는것
+  // iter2 = iter2.map(a=>a.catch(function(){}))
+  return iter ? reduce(f, acc, iter2) : reduce(f, iter2);
+});
+
+C.take = curry((l, iter) => take(l, catchNoop([...iter])));
