@@ -3,6 +3,11 @@ import Layout from "components/Layout";
 import { getPostDetail, getPostIds } from "../../lib/posts";
 import Date from "components/date";
 import utilStyles from "../../src/styles/utils.module.css";
+import dynamic from "next/dynamic";
+
+const Button = dynamic(() => import("../../src/components/Layout"), {
+  loading: () => <div>loading...</div>,
+});
 
 export async function getStaticPaths() {
   const paths = getPostIds();
@@ -12,7 +17,8 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params, preview }) {
+  console.log(`>>>>>>>> preview : ${preview}`);
   const postData = await getPostDetail(params.id);
 
   return {

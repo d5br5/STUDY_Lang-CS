@@ -1,13 +1,21 @@
 import Head from "next/head";
 import Layout from "components/Layout";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
-export default function PostDetail() {
+// export async function getServerSideProps() {
+//   return {};
+// }
+
+export default function Write() {
   const idRef = useRef(undefined);
   const titleRef = useRef(undefined);
   const contentRef = useRef(undefined);
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(router.query);
+  }, [router.query]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +23,6 @@ export default function PostDetail() {
     const title = titleRef.current.value;
     const content = contentRef.current.value;
 
-    console.log(id, title, content);
     if (id && title && content) {
       fetch("/api/post/write", {
         method: "POST",
@@ -69,3 +76,7 @@ export default function PostDetail() {
     </Layout>
   );
 }
+
+// Write.getInitialProps = async () => {
+//   return {};
+// };
