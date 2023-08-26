@@ -1,9 +1,9 @@
 import Head from "next/head";
-import Layout, { siteTitle } from "components/Layout";
+import Layout, { siteTitle } from "src/components/Layout";
 import utilStyles from "styles/utils.module.css";
 import { getSortedPostsData } from "../lib/posts";
 import Link from "next/link";
-import Date from "components/date";
+import Date from "src/components/date";
 
 // import { useEffect, useState } from "react";
 
@@ -33,6 +33,7 @@ export default function Home({ allPostsData }) {
   //     .then((res) => res.json())
   //     .then((data) => setAllPostsData(data.allPostsData));
   // }, []);
+  console.log(11);
 
   return (
     <Layout home>
