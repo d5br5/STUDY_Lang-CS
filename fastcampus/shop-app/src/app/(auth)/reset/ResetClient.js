@@ -6,6 +6,9 @@ import Input from "@/components/input/Input";
 import Button from "@/components/button/Button";
 import Link from "next/link";
 import Heading from "@/components/heading/Heading";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { toast } from "react-toastify";
+import { auth } from "@/firebase/firebase";
 
 const ResetClient = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +17,16 @@ const ResetClient = () => {
   const resetPassword = (e) => {
     e.preventDefault();
     setIsLoading(true);
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toast.success("check email to reset password");
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (

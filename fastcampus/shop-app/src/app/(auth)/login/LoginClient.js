@@ -11,6 +11,13 @@ import AutoSignInCheckbox from "@/components/autoSignInCheckbox/AutoSignInCheckb
 import Divider from "@/components/divider/Divider";
 import Button from "@/components/button/Button";
 import Link from "next/link";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { auth } from "@/firebase/firebase";
+import { toast } from "react-toastify";
 
 const LoginClient = () => {
   const [email, setEmail] = useState("");
@@ -26,9 +33,30 @@ const LoginClient = () => {
   const loginUser = (e) => {
     e.preventDefault();
     setIsLoading(true);
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        toast.success("login success");
+        redirectUser();
+      })
+      .catch((e) => {
+        toast.error(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
-  const signInWithGoogle = () => {};
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((res) => {
+        toast.success("login success");
+        redirectUser();
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
 
   return (
     <>
