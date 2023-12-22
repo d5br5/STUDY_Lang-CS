@@ -1,14 +1,52 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Header.module.scss";
 import Link from "next/link";
 
 import InnerHeader from "../innerHeader/InnerHeader";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "@/firebase/firebase";
+import { toast } from "react-toastify";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [displayName, setDisplayName] = useState("");
+  const pathname = usePathname();
 
-  const logoutUser = () => {};
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (user.displayName === null) {
+          const [u1] = user.email.split("@");
+          const uName = u1[0].toUpperCase() + u1.slice(1);
+          setDisplayName(uName);
+        } else {
+          setDisplayName(user.displayName);
+        }
+        // save user info at redux store
+      } else {
+        setDisplayName("");
+        // reset user info at redux store
+      }
+    });
+  }, []);
+
+  const logoutUser = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success("successfully logged out");
+        router.push("/");
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
+
+  const returnNullPathList = ["/login", "/register", "/reset"];
+  if (returnNullPathList.includes(pathname)) {
+    return null;
+  }
 
   return (
     <header>
@@ -48,7 +86,7 @@ const Header = () => {
           )}
         </ul>
       </div>
-      {/* {pathname.startsWith("/admin") ? null : <InnerHeader />} */}
+      {!pathname.startsWith("/admin") && <InnerHeader />}
     </header>
   );
 };
