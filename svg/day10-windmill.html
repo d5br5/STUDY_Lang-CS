@@ -1,0 +1,34 @@
+<html>
+  <style>
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    #windmill-head {
+      animation: rotate 4s linear infinite;
+    }
+  </style>
+  <svg
+    width="200"
+    height="200"
+    viewBox="-100 -100 200 200"
+    style="border: 1px solid red"
+  >
+    <g id="windmill-head">
+      <path
+        id="arm"
+        d="M -7 -20 
+         C -7 -10 7 -10 7 -20 
+         L 2 -80 
+         L -2 -80"
+      />
+      <use href="#arm" transform="rotate(120)" />
+      <use href="#arm" transform="rotate(-120)" />
+    </g>
+    <circle r="7" />
+  </svg>
+</html>
